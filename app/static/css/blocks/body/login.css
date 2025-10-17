@@ -1,0 +1,181 @@
+.register-container{
+  display: flex;
+  position: fixed;
+  align-items: center;
+  justify-content: center;
+  min-width: 100vw;
+  min-height: 89vh;
+  top: 11vh;
+  z-index: 3;
+}
+
+/* Форма регистрации - карточка */
+.form-register{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 300px;
+  height: 500px;
+  border-radius: 30px;
+  background-color: rgb(255, 255, 255);
+  padding: 25px;
+  z-index: 10;
+  box-shadow: 0px 0px 300px rgba(235, 240, 183, 0.58); /* Рассеянное свечение */
+}
+
+/* Заголовок формы */
+.heading {
+  position: relative;
+  top: -10px; /* Смещение вверх для визуального баланса */
+  font-size: 2.5em;
+  color: #2e2e2e;
+  font-weight: 700;
+  margin: 15px 0 30px 0; /* Увеличенные отступы для воздушности */
+}
+
+/* Контейнер группы полей ввода */
+.input-container{
+  width: 100%;
+  display: flex;
+  position: relative;
+  gap: 30px; /* Фиксированное расстояние между полями */
+  align-items: center;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+/* Контейнер отдельного поля с иконкой */
+.input_container{
+  display: flex;
+  width: 90%; /* Уменьшенная ширина для визуального отступа */
+  align-items: center;
+  position: relative;
+  margin: 0;
+}
+
+/* Иконка внутри поля ввода */
+.inputIcon{
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%); /* Точное вертикальное центрирование */
+  z-index: 2;
+  width: 18px;
+  height: 18px;
+  opacity: 0.7; /* Полупрозрачность для мягкости */
+}
+
+/* Поле ввода */
+.inputField{
+  width: 100%;
+  height: 45px;
+  background-color: transparent;
+  border: 1.5px solid rgb(230, 230, 230); /* Светлая граница */
+  border-radius: 30px; /* Сильное скругление */
+  color: black;
+  font-size: 0.85em;
+  font-weight: 500;
+  box-sizing: border-box;
+  padding: 0 18px 0 42px; /* Увеличенный левый паддинг для иконки */
+  transition: all 0.3s ease; /* Плавные переходы */
+}
+
+/* Состояние фокуса */
+.inputField:focus {
+  outline: none;
+  border-color: rgb(199, 114, 255); /* Фиолетовый акцент */
+  box-shadow: 0 0 0 3px rgba(199, 114, 255, 0.15); /* Светлое свечение */
+  transform: translateY(-1px); /* Легкий подъем */
+}
+
+/* Текст-подсказка */
+.inputField::placeholder {
+  color: rgb(120, 120, 120);
+  font-size: 0.95em;
+  font-weight: 500;
+}
+
+/* Основная кнопка */
+#button {
+  position: relative;
+  width: 160px;
+  height: 44px;
+  border: none;
+  background: linear-gradient(135deg, #1a0339f0, #2d0a5af0); /* Градиентный фон */
+  color: white;
+  font-size: 0.85em;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  border-radius: 18px;
+  margin: 25px 0 15px 0;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(26, 3, 57, 0.25); /* Тень для глубины */
+}
+
+#loginbutton{
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 22px;
+  border: none;
+  background-color: #2e2e2e;
+  border-radius: 9px;
+  cursor: pointer;
+  overflow: hidden;
+  text-decoration: none;
+  opacity: 0.9;
+}
+
+#loginbutton-span {
+    font-weight: 600;
+    font-size: 11px;
+    color: var(--star-white);       /* Белый цвет из CSS переменных */
+    position: relative;
+    z-index: 12;                     /* Текст выше фона кнопки */
+}
+
+/* Ховер-эффект кнопки */
+#button:hover {
+  box-shadow: 0px 0px 30px rgba(26, 3, 57, 0.5); /* Усиленная тень */
+}
+
+/* Анимация свечения кнопки */
+#button::after {
+  content: "";
+  position: absolute;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  height: 100%;
+  width: 80px;
+  top: 0;
+  left: -100px;
+  transform: skewX(-15deg); /* Наклон для динамики */
+  filter: blur(8px);
+  transition-duration: .7s;
+}
+
+/* Анимация при наведении */
+#button:hover::after {
+  transform: translateX(400px) skewX(-15deg); /* Проезжающий луч */
+  transition-duration: .7s;
+}
+
+/* Контейнер ссылки на вход */
+.signupContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 5px;
+}
+
+.signupContainer p {
+  font-size: 0.88em;
+  font-weight: 500;
+  color: #2e2e2e;
+  opacity: 0.9;
+}

@@ -1,0 +1,21 @@
+<header class="header-container">
+    <div class="stars">{%include 'blocks/header/_space_texture.html'%}</div>
+    <div class="header" role="banner">
+        <div class="logo">
+            <a href="{{url_for('post.all')}}">
+                <img class="image-logo">
+            </a>
+            <a href="{{url_for('post.all')}}" class="button-logo">CosmoSMS</a>
+        </div>
+        <nav class="header-nav" role="navigation" aria-label="Main Navigation">
+            <a href="{{url_for('post.all')}}" class="button-nav">Главная</a>
+            <a href="{{url_for('post.all')}}" class="button-nav">Общение</a>
+            <a href="{{url_for('post.all')}}" class="button-nav">Поддержка</a>
+        </nav>
+        
+        <div class="button-authentication" role="group" aria-label="User Authentication">
+            <a href="{{url_for('user.login')}}" class="button" onclick="openModal('loginModal')"><span id="register-span">Войти</span></a>
+            <a href="{{url_for('user.register')}}" class="button" onclick="openModal('registerModal')"><span id="register-span">Регистрация</span></a>
+        </div>
+    </div>
+</header>

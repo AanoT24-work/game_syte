@@ -1,0 +1,11 @@
+env/
+__pycache__/
+*.pyc
+.env
+.flaskenv
+migrations/__pycache__/
+venv/
+.idea/
+.vscode/
+*.sqlite3
+*.log

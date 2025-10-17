@@ -1,0 +1,24 @@
+:root{
+    background: var(--body-color);
+    color: var(--text-color);
+    
+    --deep-space: #000000;           /* Глубокий космический черный */
+    --cosmic-dark: #050510;          /* Темно-синий оттенок космоса */
+    --nebula-core: #1a1a2e;          /* Цвет ядра туманности */
+    --body-color: #110225;
+    --text-color: rgb(254, 255, 235);
+    
+    /* Цвета звезд разных типов */
+    --star-white: #ffffff;           /* Белый цвет стандартных звезд */
+    --star-blue: #a8d8ff;            /* Голубой цвет холодных звезд */
+    --star-yellow: #fffacd;          /* Желтый цвет теплых звезд */
+    --star-orange: #ffb347;          /* Оранжевый цвет горячих звезд */
+    --star-cyan: #00ffff;            /* Циановый цвет особых звезд */
+    --star-purple: #d8b2ff;          /* Фиолетовый цвет звезд */
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+

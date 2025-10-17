@@ -1,0 +1,90 @@
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert-container auto-hide-alert">
+                {%if category == 'success'%}
+                
+                    <div class="success-alert {{category}}">
+                        <div class="alert-content">
+                            <div class="success_icon-container">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"    
+                                    fill="none"                
+                                    vie`1wBox="0 0 24 24"             
+                                    stroke-width="1.5"          
+                                    stroke="currentColor"                      
+                                    class="alert-icon">
+                                <path
+                                    stroke-linecap="round"                 
+                                    stroke-linejoin="round"                  
+                                    d="m4.5 12.75 6 6 9-13.5">
+                                </path>
+                                </svg>
+                            </div>
+                            <div class="text-container">
+                                <p class="alert-title">Успешно!</p>
+                                <p class="alert-description">{{message}}</p>
+                            </div>
+                        </div>
+                        <button class="close-button">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"           
+                                fill="none"                                
+                                viewBox="0 0 24 24"                       
+                                stroke-width="1.5"                        
+                                stroke="currentColor"                     
+                                class="close-icon">                        
+                                <path
+                                    stroke-linecap="round"                  
+                                    stroke-linejoin="round"                 
+                                    d="M6 18 18 6M6 6l12 12">
+                                </path>
+                            </svg>
+                        </button>
+                    </div>
+
+                {%else%}
+
+                    <div class="danger-alert {{category}}" >
+                        <div class="alert-content">
+                            <div class="danger_icon-container">
+                                <svg
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                    class="alert-icon">
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M6 18 18 6M6 6l12 12">
+                                    </path>
+                                </svg>
+                            </div>
+                            <div class="text-container">
+                                <p class="alert-title">Увы!</p>
+                                <p class="alert-description">{{message}}</p>
+                            </div>
+                        </div>
+                        <button class="close-button">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"          
+                                fill="none"                               
+                                viewBox="0 0 24 24"                      
+                                stroke-width="1.5"                        
+                                stroke="currentColor"                    
+                                class="close-icon">                         
+                                <path
+                                    stroke-linecap="round"                  
+                                    stroke-linejoin="round"                  
+                                    d="M6 18 18 6M6 6l12 12">                
+                                </path>
+                            </svg>
+                        </button>
+                    </div>
+                {%endif%}
+                <!-- ДОБАВИТЬ FLASH СООБЩЕНИЯ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ -->
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}

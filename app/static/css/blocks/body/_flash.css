@@ -1,0 +1,100 @@
+.alert-container{
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    top: 110px;
+    gap: 8px; /* Расстояние между уведомлениями 8px */
+    min-width: 300px;
+    min-height: 78px;
+    font-size: 15px;
+    z-index: 5;
+}
+
+.success-alert.success{
+    cursor: default;
+    display: flex;
+    align-items: center;   /* Вертикальное выравнивание по центру */
+    justify-content: space-between; /* Распределение пространства между контентом и кнопкой */
+    width: 400px;
+    height: 60px;
+    border-radius: 8px;
+    background-color: #152921;
+    padding: 0 10px; /* Горизонтальные внутренние отступы (слева/справа по 10px) */
+}
+
+.danger-alert.danger{
+    cursor: default;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 400px;
+    height: 60px;
+    border-radius: 8px;
+    background-color: #780505;
+    padding: 0 10px;
+}
+
+.alert-content{
+    display: flex;
+    gap: 8px; /* Расстояние между иконкой и текстом */
+    align-items: center;
+}
+
+.success_icon-container{
+    color: #2b9875;
+    background-color: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    padding: 4px;  /* Внутренние отступы вокруг иконки */
+    border-radius: 6px;
+}
+
+.danger_icon-container{
+    color: #ff0000;
+    background-color: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    padding: 4px;  /* Внутренние отступы вокруг иконки */
+    border-radius: 6px;
+}
+
+.alert-icon{
+    width: 24px;
+    height: 24px;
+}
+
+.text-container{
+    display: flex;
+    flex-direction: column; /* Текст располагается в колонку (заголовок над описанием) */
+}
+
+.alert-title{
+    color: white;
+    margin: 0;
+    font-weight: 500;
+}
+
+.alert-description{
+    color: #6b7280;
+    margin: 0;
+    font-weight: 400;
+}
+
+.close-button{
+    color: #6b7280;
+    background: none; /* Прозрачный фон */
+    border: none; /* Убираем стандартную рамку кнопки */
+    padding: 4px;
+    border-radius: 4px;
+    cursor: pointer; /* Курсор-указатель при наведении */
+    transition: background-color 0.15s ease-linear;
+}
+
+.close-button:hover{
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.close-icon{
+    width: 24px;
+    height: 24px;
+}

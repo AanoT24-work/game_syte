@@ -1,0 +1,57 @@
+/* ===== КНОПКИ АВТОРИЗАЦИИ ===== */
+.button-authentication{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;                      /* Расстояние между кнопками */
+    height: 100%;                   /* Занимает всю высоту родителя */
+}
+
+/* Стили отдельных кнопок */
+.button {
+    display: flex;
+    position: relative;
+    text-decoration: none;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;                /* Курсор-указатель при наведении */
+    font-weight: 500;
+    font-size: 18px;
+    padding: 0.7em 0.8em;          /* Внутренние отступы */
+    color: white;
+    /* Градиентный фон с прозрачностью 60% */
+    background: linear-gradient(to right, 
+        rgba(15, 12, 41, 0.6),
+        rgba(48, 43, 99, 0.6), 
+        rgba(36, 36, 62, 0.6));
+    border: none;
+    letter-spacing: 0.05em;         /* Межбуквенный интервал */
+    border-radius: 16px;            /* Закругленные углы */
+    min-width: 120px;               /* Минимальная ширина кнопки */
+    transition: all 0.9s ease;      /* Плавные анимации */
+    z-index: 1;                     /* Уровень слоя */
+}
+
+/* Состояние при наведении на кнопку */
+.button:hover {
+    /* Градиент становится ярче - прозрачность 80% */
+    background: linear-gradient(to right, 
+        rgba(15, 12, 41, 0.8),
+        rgba(48, 43, 99, 0.8), 
+        rgba(36, 36, 62, 0.8));
+}
+
+/* Текст внутри кнопки */
+#register-span {
+    text-transform: uppercase;
+    font-size: 17px;
+    color: var(--star-white);       /* Белый цвет из CSS переменных */
+    position: relative;
+    opacity: 0.8;                   /* Текст слегка прозрачный */
+    z-index: 2;                     /* Текст выше фона кнопки */
+}
+
+/* Текст становится полностью непрозрачным при наведении на кнопку */
+a:hover #register-span{
+    opacity: 1;
+}
