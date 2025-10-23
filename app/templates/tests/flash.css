@@ -1,224 +1,108 @@
-/* Основной контейнер для всех уведомлений */
-.alert-container {
-  display: flex;              /* Используем flexbox для расположения уведомлений */
-  flex-direction: column;     /* Располагаем уведомления вертикально друг под другом */
-  gap: 8px;                  /* Расстояние между уведомлениями 8px */
-  width: 240px;              /* Фиксированная ширина контейнера для мобильных устройств */
-  font-size: 10px;           /* Базовый размер шрифта для мобильных устройств */
-  z-index: 2;               /* Высокий z-index для отображения поверх других элементов */
+.burger-checkbox {
+  position: absolute;
+  visibility: hidden;
 }
-
-/* Стили для отдельного уведомления об успехе */
-.success-alert {
-  cursor: default;           /* Курсор по умолчанию (не кликабельная область) */
-  display: flex;             /* Flexbox для горизонтального расположения содержимого */
-  align-items: center;       /* Вертикальное выравнивание по центру */
-  justify-content: space-between; /* Распределение пространства между контентом и кнопкой */
-  width: 100%;               /* Занимает всю ширину родительского контейнера */
-  height: 48px;              /* Фиксированная высота уведомления */
-  border-radius: 8px;        /* Скругление углов */
-  background-color: #232531; /* Темно-синий/серый цвет фона */
-  padding: 0 10px;           /* Горизонтальные внутренние отступы (слева/справа по 10px) */
+.burger {
+  position: relative;
+  z-index: 1;
+  cursor: pointer;
+  display: block;
+  position: relative;
+  border: none;
+  background: transparent;
+  width: 40px;
+  height: 26px;
 }
-
-/* Контейнер для основного содержимого (иконка + текст) */
-.alert-content {
-  display: flex;             /* Flexbox для горизонтального расположения */
-  gap: 8px;                  /* Расстояние между иконкой и текстом */
-  align-items: center;       /* Вертикальное выравнивание по центру */
+.burger::before,
+.burger::after {
+  content: '';
+  left: 0;
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 4px;
+  border-radius: 10px;
+  background: #000;
 }
-
-/* Стили для контейнера иконки */
-.icon-container {
-  color: #2b9875;            /* Зеленый цвет для иконки (символ успеха) */
-  background-color: rgba(255, 255, 255, 0.05); /* Полупрозрачный белый фон */
-  backdrop-filter: blur(20px); /* Размытие фона behind элемента (эффект стекла) */
-  padding: 4px;              /* Внутренние отступы вокруг иконки */
-  border-radius: 6px;        /* Скругление углов контейнера иконки */
+.burger::before {
+  top: 0;
+  box-shadow: 0 11px 0 #000;
+  transition: box-shadow .3s .15s, top .3s .15s, transform .3s;
 }
-
-/* Стили для SVG иконки статуса */
-.alert-icon {
-  width: 24px;               /* Ширина иконки */
-  height: 24px;              /* Высота иконки */
+.burger::after {
+  bottom: 0;
+  transition: bottom .3s .15s, transform .3s;
 }
-
-/* Контейнер для текстового содержимого */
-.text-container {
-  display: flex;             /* Flexbox для вертикального расположения текста */
-  flex-direction: column;    /* Текст располагается в колонку (заголовок над описанием) */
+.burger-checkbox:checked + .burger::before {
+  top: 11px;
+  transform: rotate(45deg);
+  box-shadow: 0 6px 0 rgba(0,0,0,0);
+  transition: box-shadow .15s, top .3s, transform .3s .15s;
 }
-
-/* Стили для заголовка уведомления */
-.alert-title {
-  color: white;              /* Белый цвет текста */
-  margin: 0;                 /* Убираем внешние отступы */
-  font-weight: 500;          /* Средняя жирность шрифта (полужирный) */
+.burger-checkbox:checked + .burger::after {
+  bottom: 11px;
+  transform: rotate(-45deg);
+  transition: bottom .3s, transform .3s .15s;
 }
-
-/* Стили для описания уведомления */
-.alert-description {
-  color: #6b7280;            /* Серый цвет текста (менее заметный чем заголовок) */
-  margin: 0;                 /* Убираем внешние отступы */
-  font-weight: 400;          /* Нормальная жирность шрифта */
+.menu-list {
+  top: 0;
+  left: 0;
+  position: absolute;
+  display: grid;
+  gap: 12px;
+  padding: 42px 0;
+  margin: 0;
+  background: orange;
+  list-style-type: none;
+  transform: translateX(-100%);
+  transition: .3s;
+  width: 200px;
 }
-
-/* Стили для кнопки закрытия */
-.close-button {
-  color: #6b7280;            /* Серый цвет иконки закрытия */
-  background: none;          /* Прозрачный фон */
-  border: none;              /* Убираем стандартную рамку кнопки */
-  padding: 4px;              /* Внутренние отступы для увеличения кликабельной области */
-  border-radius: 4px;        /* Легкое скругление углов */
-  cursor: pointer;           /* Курсор-указатель при наведении */
-  transition: background-color 0.15s ease-linear; /* Плавный переход фона при наведении */
+.menu-item {
+  display: block;
+  padding: 8px;
+  color: white;
+  font-size: 18px;
+  text-align: center;
+  text-decoration: none;
 }
-
-/* Эффект при наведении на кнопку закрытия */
-.close-button:hover {
-  background-color: rgba(255, 255, 255, 0.05); /* Легкий полупрозрачный белый фон */
+.menu-item:hover {
+  background: rgba(255,255,255,.2)
 }
-
-/* Стили для иконки закрытия */
-.close-icon {
-  width: 24px;               /* Ширина иконки */
-  height: 24px;              /* Высота иконки */
-}
-
-/* Медиа-запрос для адаптации на больших экранах (планшеты, десктопы) */
-@media (min-width: 640px) {
-  .alert-container {
-    width: 288px;            /* Увеличиваем ширину на больших экранах */
-    font-size: 12px;         /* Увеличиваем базовый размер шрифта */
-  }
-  
-  .success-alert {
-    height: 56px;            /* Увеличиваем высоту уведомления */
-  }
+.burger-checkbox:checked ~ .menu-list {
+  transform: translateX(0);
 }
 
 
-
-
-
-
-.form_main {
-  position: fixed;
-  width: 300px; 
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -40%);
-  z-index: 1000;
+.input {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  background-color: rgb(255, 255, 255);
-  padding: 25px; 
-  border-radius: 30px;
-  box-shadow: 0px 0px 300px rgba(235, 240, 183, 0.58);
+  width: 20px;
+  background-color: #0D1117;
+  justify-content: center;
+  border-radius: 5px
 }
 
-.heading {
-  font-size: 2.5em;
-  color: #2e2e2e;
-  font-weight: 700;
-  margin: 15px 0 30px 0;
-}
-
-.inputContainer {
-  width: 100%;
-  position: relative;
-  display: flex;
-  align-items: center;
-
-}
-
-.inputIcon {
-  position: absolute;
-  left: 10px;
-}
-
-.inputField {
-  width: 100%;
-  height: 40px;
+.value {
   background-color: transparent;
   border: none;
-  border-bottom: 2px solid rgb(173, 173, 173);
-  border-radius: 30px;
-  margin: 10px 0;
-  color: black;
-  font-size: .8em;
-  font-weight: 500;
-  box-sizing: border-box;
-  padding-left: 30px;
-}
-
-.inputField:focus {
-  outline: none;
-  border-bottom: 2px solid rgb(199, 114, 255);
-}
-
-.inputField::placeholder {
-  color: rgb(80, 80, 80);
-  font-size: 1em;
-  font-weight: 500;
-}
-
-#button {
-  position: relative;
-  width: 100%;
-  border: 2px solid #110225;
-  background-color: #1a0339f0;
-  height: 40px;
   color: white;
-  font-size: .8em;
-  font-weight: 500;
-  letter-spacing: 1px;
-  border-radius: 30px;
-  margin: 20px 0; /* Только вертикальные отступы */
-  cursor: pointer;
-  overflow: hidden;
-}
-
-#button::after {
-  content: "";
-  position: absolute;
-  background-color: var(--text-color);
-  height: 100%;
-  width: 150px;
-  top: 0;
-  left: -200px;
-  border-bottom-right-radius: 100px;
-  border-top-left-radius: 100px;
-  filter: blur(10px);
-  transition-duration: .5s;
-}
-
-#button:hover::after {
-  transform: translateX(600px);
-  transition-duration: .5s;
-}
-
-.signupContainer {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 15px; /* Уменьшили немного */
-  padding: 7px;
+  position: relative;
+  gap: 5px;
+  cursor: pointer;
+  border-radius: 4px;
 }
 
-.signupContainer p {
-  font-size: .9em;
-  font-weight: 500;
-  color: black;
-}
 
-.signupContainer a {
-  font-size: .7em;
-  font-weight: 500;
-  background-color: #2e2e2e;
-  color: white;
-  text-decoration: none;
-  padding: 8px 15px;
-  border-radius: 20px;
-}
+
+<div class="menu">
+    <input type="checkbox" id="burger-checkbox" class="burger-checkbox">
+    <label for="burger-checkbox" class="burger"></label>
+    <ul class="menu-list">
+        <li><a href="#" class="menu-item">Главная</a><li>
+        <li><a href="#" class="menu-item">О нас</a><li>
+        <li><a href="#" class="menu-item">Команда</a><li>
+        <li><a href="#" class="menu-item">Контакты</a><li>
+    </ul>
+</div>

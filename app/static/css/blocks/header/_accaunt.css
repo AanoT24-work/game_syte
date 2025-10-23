@@ -1,0 +1,149 @@
+.accaunt-btn{
+    display: flex;
+    position: relative;
+    text-decoration: none;
+    justify-content: center;
+    align-items: center;
+    min-width: 45px;
+    min-height: 45px;
+    max-height: 80px;
+    max-width: 80px;
+    border-radius: 999px;
+    padding: 9px;
+    color: white;
+    /* Градиентный фон с прозрачностью 60% */
+    background: linear-gradient(to right, 
+        rgba(15, 12, 41, 0.6),
+        rgba(48, 43, 99, 0.6), 
+        rgba(36, 36, 62, 0.6));
+    border: none;
+    cursor: pointer;
+    transition: all 0.9s ease;
+    z-index: 1002; /* Высокий z-index для нахождения поверх других элементов */
+}
+
+/* Состояние кнопки при наведении */
+.accaunt-btn:hover{
+    /* Градиент становится ярче - прозрачность 80% */
+    background: linear-gradient(to right, 
+        rgba(15, 12, 41, 0.8),
+        rgba(48, 43, 99, 0.8), 
+        rgba(36, 36, 62, 0.8));
+}
+
+/* Стили для всплывающего имени пользователя */
+.header-username{
+    display: flex;
+    position: absolute; /* Абсолютное позиционирование относительно кнопки */
+    top: 50%; /* Центрирование по вертикали */
+    right: 100%; /* Позиционирование слева от кнопки */
+    transform: translateY(-50%); /* Точное центрирование */
+    width: 200px;
+    height: 45px;
+    opacity: 0; /* Изначально невидим */
+    letter-spacing: 0.5px;
+    pointer-events: none; /* Не блокирует клики на другие элементы */
+    transition: all 0.6s; /* Плавная анимация появления */
+    border-radius: 50px;
+    /* Градиентный фон такой же как у кнопки */
+    background: linear-gradient(to right, 
+        rgba(15, 12, 41, 0.8),
+        rgba(48, 43, 99, 0.8), 
+        rgba(36, 36, 62, 0.8));
+    align-items: center; 
+    justify-content: center;
+    padding: 10px;
+    color: #fff;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 300;
+    margin-right: 10px; /* Отступ от кнопки */
+    z-index: 1003; /* Выше чем сама кнопка */
+}
+
+/* Показываем имя пользователя при наведении на кнопку */
+.accaunt-btn:hover .header-username {
+    opacity: 1; /* Полная видимость */
+    visibility: visible; /* Гарантирует отображение */
+    pointer-events: auto; /* Включаем взаимодействие */
+}
+
+/* Стили для SVG иконки */
+.accaunt-path{
+    opacity: 0.8; /* Легкая прозрачность */
+    z-index: 2; /* Поверх фона кнопки */
+}
+
+/* Иконка становится ярче при наведении */
+.accaunt-btn:hover .accaunt-path{
+    opacity: 1; /* Полная непрозрачность */
+}
+
+/* ===== СТИЛИ ДЛЯ ВЫПАДАЮЩЕГО МЕНЮ ===== */
+.menu{
+    position: fixed; /* Фиксированное позиционирование относительно окна браузера */
+    top: 80px; /* Располагается сразу под хедером (высота хедера) */
+    right: 2rem; /* Такой же отступ справа как у хедера */
+    flex-direction: column;
+    width: 180px;
+    height: auto;
+    /* Градиентный фон с высокой прозрачностью для красивого эффекта */
+    background: linear-gradient(to right, 
+        rgba(15, 12, 41, 0.95),
+        rgba(48, 43, 99, 0.95), 
+        rgba(36, 36, 62, 0.95));
+    border-radius: 10px;
+    padding: 10px 0;
+    opacity: 0; /* Изначально невидим */
+    visibility: hidden; /* Скрыт из потока документа */
+    transform: translateY(-10px); /* Начальное положение чуть выше */
+    transition: all 0.3s ease; /* Плавная анимация появления */
+    z-index: 10000; /* Очень высокий z-index для отображения поверх всех элементов */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Тень для объемного эффекта */
+}
+
+/* Показываем меню в двух случаях:
+   1. При наведении на кнопку аккаунта (соседний элемент)
+   2. При наведении на само меню (чтобы не пропадало при переходе) */
+.accaunt-btn:hover + .menu,
+.menu:hover {
+    opacity: 1; /* Полная видимость */
+    visibility: visible; /* Показываем элемент */
+    transform: translateY(0); /* Возвращаем в нормальное положение */
+    pointer-events: auto; /* Включаем взаимодействие */
+}
+
+/* Стили для пунктов меню */
+.menu li {
+    list-style: none; /* Убираем стандартные маркеры списка */
+    margin: 0; /* Убираем отступы */
+}
+
+.menu a {
+    display: block; /* Занимает всю ширину */
+    padding: 12px 20px;
+    color: white;
+    text-decoration: none; /* Убираем подчеркивание */
+    font-family: "Montserrat", sans-serif;
+    font-weight: 300;
+    transition: all 0.3s ease; /* Плавная анимация при наведении */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Разделительная линия */
+}
+
+/* Эффект при наведении на пункт меню */
+.menu a:hover {
+    background: rgba(255, 255, 255, 0.1); /* Легкий светлый фон */
+    padding-left: 25px; /* Сдвиг текста вправо для анимации */
+}
+
+/* Убираем разделительную линию у последнего пункта */
+.menu a:last-child {
+    border-bottom: none;
+}
+
+/* Контейнер для кнопок аутентификации */
+.button-authentication {
+    position: relative; /* Для правильного позиционирования дочерних элементов */
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Расстояние между элементами */
+}

@@ -9,7 +9,12 @@ COPY requirements.txt .
 RUN apt update && apt install -y gcc && rm -rf /var/lib/apt/lists/*
 RUN pip install -r requirements.txt
 
+
 # 3. ТОЛЬКО ПОСЛЕ этого копируем весь код
 COPY . .
 
-CMD ["uwsgi", "app.ini"]
+
+# Команда переопределяется в docker-compose.yml
+CMD ["python", "-m", "flask", "run", "--host=0.0.0.0", "--port=3031", "--debug"]
+
+# CMD ["uwsgi", "app.ini"]

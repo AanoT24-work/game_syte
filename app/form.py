@@ -1,7 +1,7 @@
 # Импорт необходимых компонентов Flask-WTF для работы с формами
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed
-from wtforms import BooleanField, SelectField, StringField, PasswordField, SubmitField, ValidationError
+from wtforms import BooleanField, FileField, SelectField, StringField, PasswordField, SubmitField, ValidationError
 from wtforms.validators import DataRequired, Length, EqualTo
 
 # Импорт модели пользователя для проверок
@@ -24,14 +24,6 @@ class RegistrationForm(FlaskForm):
     # Кнопка отправки формы
     submit = SubmitField('Подтвердить')
     
-    # Кастомный валидатор для проверки уникальности логина
-    def validate_login(self, field):
-        # Ищем пользователя с таким же логином в базе данных
-        user = User.query.filter_by(login=self.login.data).first()
-        # Если пользователь найден, вызываем ошибку валидации
-        if user:
-            raise ValidationError('Данное имя пользователя уже занято', 'danger')
-
 
 # Класс формы для авторизации пользователей
 class LoginForm(FlaskForm):
@@ -43,3 +35,14 @@ class LoginForm(FlaskForm):
     
     # Кнопка отправки формы
     submit = SubmitField('Войти')
+    
+    
+class AccauntForm(FlaskForm):
+    
+    photo = FileAllowed(['jpg', 'jpeg', 'png'], 'Только JPEG, JPG и PNG файлы!')
+    push = SubmitField('Обновить аватар')
+    deleate = SubmitField('Удалить аватар')
+    
+    
+    coment = StringField('Введите комментарий', validators=[DataRequired(), Length(min=1, max=200)])
+    like = SubmitField('')

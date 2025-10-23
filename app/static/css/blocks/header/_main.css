@@ -1,32 +1,34 @@
 /* ===== ОСНОВНОЙ КОНТЕЙНЕР ШАПКИ ===== */
 .header-container {
     position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
-    height: 11vh;
+    height: 80px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    z-index: 1;
+    z-index: 1000;
     backdrop-filter: blur(40rem);
     background: 
         radial-gradient(ellipse at 30% 20%, var(--cosmic-dark) 0%, transparent 70%),
         radial-gradient(ellipse at 70% 80%, #0a0822 0%, transparent 60%),
         linear-gradient(135deg, #000000 0%, #050510 30%, #000000 100%);
-    overflow: hidden;
+    /* УБИРАЕМ overflow completely */
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.8);
 }
 
 /* ===== КОНТЕЙНЕР ДЛЯ КОНТЕНТА ШАПКИ ===== */
 .header {
-    position: fixed;  /* ← ВОЗВРАЩАЕМ fixed */
-    top: 0;          /* ← ДОБАВЛЯЕМ явное позиционирование */
-    left: 0;
+    position: relative; /* Меняем fixed на relative */
     width: 100%;
-    z-index: 10;
+    height: 100%;
+    z-index: 1001;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 1.5rem 2rem;
+    box-sizing: border-box;
 }
 
 /* Стили кнопок оставляем как у вас */
@@ -46,4 +48,9 @@
     font-size: 20px;
     text-transform: uppercase;
     text-decoration: none;
+}
+
+/* Добавляем отступ для основного контента */
+.main-content {
+    margin-top: 80px; /* Такой же как высота хедера */
 }

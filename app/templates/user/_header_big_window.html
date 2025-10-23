@@ -14,8 +14,27 @@
         </nav>
         
         <div class="button-authentication" role="group" aria-label="User Authentication">
-            <a href="{{url_for('user.login')}}" class="button" onclick="openModal('loginModal')"><span id="register-span">Войти</span></a>
-            <a href="{{url_for('user.register')}}" class="button" onclick="openModal('registerModal')"><span id="register-span">Регистрация</span></a>
+            {% if current_user.is_authenticated %}
+                <!-- Для авторизованных пользователей -->
+                <button class="accaunt-btn">
+                    <span class="header-username">Username: {{ current_user.login }}</span>
+                    <svg data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                        <path class="accaunt-path" d="m1.5 13v1a.5.5 0 0 0 .3379.4731 18.9718 18.9718 0 0 0 6.1621 1.0269 18.9629 18.9629 0 0 0 6.1621-1.0269.5.5 0 0 0 .3379-.4731v-1a6.5083 6.5083 0 0 0 -4.461-6.1676 3.5 3.5 0 1 0 -4.078 0 6.5083 6.5083 0 0 0 -4.461 6.1676zm4-9a2.5 2.5 0 1 1 2.5 2.5 2.5026 2.5026 0 0 1 -2.5-2.5zm2.5 3.5a5.5066 5.5066 0 0 1 5.5 5.5v.6392a18.08 18.08 0 0 1 -11 0v-.6392a5.5066 5.5066 0 0 1 5.5-5.5z" 
+                                fill="#ffffff" 
+                                stroke="#e2e8ff" 
+                                stroke-width="0.15">
+                        </path>
+                    </svg>
+                </button>
+                <ul class="menu">
+                    <li><a href="{{url_for('user.accaunt')}}">Мой аккаунт</a></li>
+                    <li><a href="{{url_for('user.logout')}}" class="out-btn">Выйти</a></li>
+                </ul>
+            {% else %}
+                <!-- Для неавторизованных пользователей -->
+                <a href="{{url_for('user.login')}}" class="button"><span>Войти</span></a>
+                <a href="{{url_for('user.register')}}" class="button"><span>Регистрация</span></a>
+            {% endif %}
         </div>
     </div>
 </header>

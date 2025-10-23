@@ -1,4 +1,6 @@
 from flask import Flask
+
+from .models.user import User
 from .extensions import db, migrate, login_manager
 from .config import Config
 
