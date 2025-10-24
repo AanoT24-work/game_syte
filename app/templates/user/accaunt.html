@@ -1,34 +1,49 @@
-
 {% extends 'main/main.html' %}
 
 {% block title %}Мой аккаунт{% endblock %}
 
 {%block style%}
     <link rel="stylesheet" href="{{url_for('static', filename='css/blocks/body/accaunt.css')}}">
-
 {%endblock%}
 
 {% block content %}
+<div class="main-container">
+    <div class="accaunt-container">
+        <div class="info-container">
+            <button class="user-avatar">
+                <img src="">
+            </button>
+        </div>
 
-<div class="accaunt-page">
-    <div class="info-container">
-        <button class="user-avatar">
-            <img src="">
-        </button>
+        <div class="main_container">
+            <div class="photo-container">
+                <form class="photo-form">
+                    <p class="heading">Добавить<br>Аватар</p>
+                    {{form.hidden_tag()}}
 
-        <input type="text" class="description">
-        <button class="new_post" title="Add new">
-            <svg viewBox="0 0 24 24" height="50px" width="50px" xmlns="http://www.w3.org/2000/svg">
-                <path class="circle" stroke-width="1.5" d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"></path>
-                <path class="cross" stroke-width="1.5" d="M8 12H16"></path>
-                <path class="cross" stroke-width="1.5" d="M12 16V8"></path>
-            </svg>
-        </button>
-    </div>
+                    <div class="input-container">
+                        
+                        <div class="file-input-wrapper">
+                            <input class="photo-input" 
+                            type="file" 
+                            accept="image/*" 
+                            id="fileInput">
+                            <label for="fileInput" class="file-input-label">
+                                <span class="file-input-text">Нажмите чтобы выбрать изображение</span>
+                            </label>
+                        </div>
 
-    <div class="posts-container">
-
+                        <div class="photo-button">
+                            <button class="save_button">Сохранить</button>
+                            <button class="cancel_button">Отмена</button>
+                        </div>
+                        <button class="deleate_button">Удалить</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 
+<script src="static/js/body/accaunt.js"></script>
 {% endblock %}
