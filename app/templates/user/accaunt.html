@@ -2,49 +2,56 @@
 
 {% block title %}Мой аккаунт{% endblock %}
 
-{%block style%}
+{% block style %}
     <link rel="stylesheet" href="{{url_for('static', filename='css/blocks/body/accaunt.css')}}">
-{%endblock%}
+{% endblock %}
 
 {% block content %}
 <div class="main-container">
     <div class="accaunt-container">
         <div class="info-container">
-            <button class="user-avatar">
-                <img src="">
+            <button class="user-avatar" id="openAvatarModal">
+                {% if current_user.avatar %}
+                    <img src="{{ url_for('static', filename='upload/avatars/' + current_user.avatar) }}" alt="Аватар">
+                {% else %}
+                    <span>👤</span>
+                {% endif %}
             </button>
-        </div>
-
-        <div class="main_container">
-            <div class="photo-container">
-                <form class="photo-form">
-                    <button type="button" class="close-button">&times;</button>
-                    <p class="heading">Аватар</p>
-                    {{form.hidden_tag()}}
-
-                    <div class="input-container">
-                        
-                        <div class="file-input-wrapper">
-                            <input class="photo-input" 
-                            type="file" 
-                            accept="image/*" 
-                            id="fileInput">
-                            <label for="fileInput" class="file-input-label">
-                                <span class="file-input-text">Нажмите чтобы выбрать изображение</span>
-                            </label>
-                        </div>
-
-                        <div class="photo-button">
-                            <button class="save_button">Сохранить</button>
-                            <button class="cancel_button">Отмена</button>
-                        </div>
-                        <button class="deleate_button">Удалить</button>
-                    </div>
-                </form>
-            </div>
         </div>
     </div>
 </div>
 
-<script src="static/js/body/accaunt.js"></script>
+<!-- Оверлей -->
+<div class="overlay" id="overlay"></div>
+
+<!-- Модальное окно -->
+<div class="photo-container" id="photoContainer">
+    <div class="photo-content">
+        <!-- ИСПОЛЬЗУЙ FORM ИЗ FLASK-WTF С CSRF ТОКЕНОМ -->
+        <form class="photo-form" id="avatarForm" method="POST" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}  <!-- ← ВАЖНО: CSRF токен -->
+            
+            <button type="button" class="close-button" id="closeButton">&times;</button>
+            <p class="heading">Аватар</p>
+            
+            <div class="file-input-wrapper">
+                <!-- ИСПОЛЬЗУЙ ПОЛЕ ИЗ FLASK-WTF ФОРМЫ -->
+                {{ form.avatar(class="photo-input", id="fileInput", accept="image/*") }}
+                
+                <label for="fileInput" class="file-input-label" id="fileInputLabel">
+                    <img class="avatar-preview" id="avatarPreview" alt="Предпросмотр">
+                    <span class="file-input-text">Нажмите чтобы выбрать изображение</span>
+                </label>
+            </div>
+
+            <div class="photo-button">
+                {{ form.push(class="save_button", type="submit") }}  <!-- Кнопка отправки формы -->
+                <button type="button" class="cancel_button" id="cancelButton">Отмена</button>
+            </div>
+            {{ form.deleate(class="deleate_button", id="deleteButton", type="button") }}  <!-- Кнопка удаления -->
+        </form>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/body/accaunt.js') }}"></script>
 {% endblock %}

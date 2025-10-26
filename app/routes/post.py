@@ -7,5 +7,5 @@ post = Blueprint('post', __name__)
 @post.route('/', methods = ['POST', 'GET'])
 @login_required  # Добавляем декоратор для проверки авторизации
 def all():
-    posts = Post.query.order_by(Post.date.desc()).all()
+    posts = Post.query.order_by(Post.created_at.desc()).all()
     return render_template('post/all.html', posts=posts)

@@ -1,97 +1,141 @@
-/* CSS для правильного позиционирования под header */
+/* Основной контейнер под header */
 .main-container {
     display: flex;
-    margin-top: 80px; /* Высота header */
+    margin-top: 80px; /* Отступ сверху равен высоте header */
     width: 100%;
-    min-height: calc(100vh - 80px); /* Высота viewport минус высота header */
+    min-height: calc(100vh - 80px); /* Минимальная высота: весь экран минус header */
     background: 
-        radial-gradient(ellipse at 30% 20%, #03020e 0%, transparent 70%),
-        radial-gradient(ellipse at 70% 80%, #120723 0%, transparent 60%),
-        linear-gradient(135deg, #000000 0%, #070312 30%, #000000 100%);
+        radial-gradient(ellipse at 30% 20%, #03020e 0%, transparent 70%), /* Верхний левый градиент */
+        radial-gradient(ellipse at 70% 80%, #120723 0%, transparent 60%), /* Нижний правый градиент */
+        linear-gradient(135deg, #000000 0%, #070312 30%, #000000 100%); /* Основной фоновый градиент */
 }
 
+/* Контейнер аккаунта - центрирует содержимое */
 .accaunt-container{
     display: flex;
     align-items: center;
     min-width: 100%;
     min-height: 100%;
-    flex-direction: column;
+    flex-direction: column; /* Вертикальное расположение */
+    position: relative;
 }
 
+/* Блок с информацией пользователя */
 .info-container {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-between; /* Равномерное распределение */
     width: 100%;
     max-width: 100%;
     height: 100px;
-    background: rgba(10, 6, 25, 0.85);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border: 1px solid rgba(120, 80, 200, 0.2);
-    border-radius: 16px;
+    background: rgba(10, 6, 25, 0.85); /* Темно-фиолетовый полупрозрачный фон */
+    backdrop-filter: blur(15px); /* Размытие фона для стеклянного эффекта */
+    -webkit-backdrop-filter: blur(15px); /* Поддержка для Safari */
+    border: 1px solid rgba(120, 80, 200, 0.5); /* Тонкая фиолетовая граница */
+    border-radius: 16px; /* Закругленные углы */
     padding: 20px;
-    box-shadow: 0 8px 32px rgba(40, 0, 80, 0.4);
-    margin-bottom: 20px;
+    box-shadow: 0 8px 32px rgba(40, 0, 80, 0.5); /* Тень с фиолетовым оттенком */
+    margin-bottom: 20px; /* Отступ снизу */
 }
 
+/* Аватар пользователя */
 .user-avatar {
     width: 70px;
     height: 70px;
-    border-radius: 50%;
-    border: 2px solid rgba(140, 100, 220, 0.3);
-    background: radial-gradient(circle, #151525 0%, #070615 100%);
-    cursor: pointer;
-    transition: all 0.3s ease;
+    border-radius: 50%; /* Круглая форма */
+    border: 2px solid rgba(140, 100, 220, 0.6); /* Фиолетовая граница */
+    background: radial-gradient(circle, #151525 0%, #070615 100%); /* Градиентный фон */
+    cursor: pointer; /* Указатель при наведении */
+    transition: all 0.3s ease; /* Плавные переходы */
     overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: rgba(180, 160, 255, 0.8);
+    color: rgba(180, 160, 255); /* Цвет иконки */
     font-size: 24px;
-    box-shadow: 0 0 20px rgba(80, 40, 160, 0.3);
+    box-shadow: 0 0 30px rgba(80, 40, 160, 0.4); /* Свечение */
 }
 
+/* Эффекты при наведении на аватар */
 .user-avatar:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 30px rgba(120, 80, 200, 0.4);
-    border-color: rgba(160, 120, 240, 0.4);
+    transform: scale(1.05); /* Увеличение */
+    box-shadow: 0 0 30px rgba(120, 80, 200, 0.7); /* Усиленное свечение */
+    border-color: rgba(160, 120, 240, 1); /* Более яркая граница */
 }
 
-.main_container{
-    display: flex;
+/* Изображение внутри аватара */
+.user-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Заполнение контейнера */
+    border-radius: 50%; /* Круглая форма */
+}
+
+/* Скрываем старый контейнер */
+.main_container {
+    display: none;
+}
+
+/* Оверлей для модального окна */
+.overlay {
+    display: none;
     position: fixed;
-    top: 180px;
-    align-items: center;
-    justify-content: center;
-    width: 100vw;
-    height: 80vh;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:rgba(37, 20, 71, 0.4); /* Более яркая граница */
+    z-index: 9; /* Высокий z-index поверх всего */
 }
 
+/* Показываем оверлей */
+.overlay.show {
+    display: block;
+}
+
+/* Контейнер модального окна */
 .photo-container {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Центрирование */
+    z-index: 10; /* Поверх оверлея */
+    width: auto;
+    height: auto;
+}
+
+/* Показываем модальное окно */
+.photo-container.show {
+    display: flex;
+}
+
+/* Содержимое модального окна */
+.photo-content {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
     height: 500px;
-    max-width: 320px;
+    width: 300px;
     flex-direction: column;
-    background: rgba(10, 6, 25, 0.75);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(120, 80, 200, 0.25);
+    background: rgba(10, 6, 25, 0.98); /* Полупрозрачный темный фон */
+    border: 1px solid rgba(120, 80, 200, 0.3);
     border-radius: 20px;
-    padding: 30px 25px;
+    padding: 15px 12.5px;
     box-shadow: 
-        0 15px 35px rgba(40, 0, 80, 0.5),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1),
-        0 0 40px rgba(80, 40, 160, 0.2);
+        0 15px 35px rgba(40, 0, 80, 0.6), /* Внешняя тень */
+        inset 0 1px 0 rgba(255, 255, 255, 0.1), /* Внутреннее свечение */
+        0 0 60px rgba(80, 40, 160, 0.4); /* Размытое свечение */
     box-sizing: border-box;
     position: relative;
     overflow: hidden;
 }
 
-.photo-container::before {
+
+
+/* Верхняя декоративная линия */
+.photo-content::before {
     content: '';
     position: absolute;
     top: 0;
@@ -100,27 +144,13 @@
     height: 1px;
     background: linear-gradient(90deg, 
         transparent, 
-        rgba(140, 100, 220, 0.4), 
+        rgba(140, 100, 220, 0.5), 
         transparent
     );
 }
 
-.photo-container::after {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(70, 40, 140, 0.08) 0%, transparent 70%);
-    animation: float 6s ease-in-out infinite;
-}
 
-@keyframes float {
-    0%, 100% { transform: translate(0, 0) rotate(0deg); }
-    50% { transform: translate(-10px, -10px) rotate(180deg); }
-}
-
+/* Форма загрузки фото */
 .photo-form {
     display: flex;
     flex-direction: column;
@@ -128,31 +158,33 @@
     justify-content: center;
     width: 100%;
     height: auto;
-    gap: 20px;
+    gap: 20px; /* Отступ между элементами */
     position: relative;
-    z-index: 2;
+    z-index: 2; /* Поверх фона */
 }
 
+/* Заголовок формы */
 .heading {
-    text-transform: uppercase;
+    text-transform: uppercase; /* Все буквы заглавные */
     text-align: center;
     margin: 0;
     font-size: 1.4em;
     font-weight: 600;
     color: rgba(230, 220, 255, 0.95);
-    text-shadow: 0 0 12px rgba(160, 120, 240, 0.4);
-    letter-spacing: 2px;
+    text-shadow: 0 0 12px rgba(160, 120, 240, 0.4); /* Свечение текста */
+    letter-spacing: 2px; /* Разреженные буквы */
     width: 100%;
     margin-bottom: 10px;
 }
 
+/* Кнопка закрытия */
 .close-button {
     position: absolute;
-    top: -50px;
-    right: 0px;
-    background: rgba(20, 15, 40, 0.8);
-    border: 1px solid rgba(140, 100, 220, 0.3);
-    border-radius: 50%;
+    top: -30px;
+    right: 10px;
+    background: rgba(20, 15, 40, 0.9);
+    border: 1px solid rgba(140, 100, 220, 0.4);
+    border-radius: 50%; /* Круглая форма */
     width: 32px;
     height: 32px;
     font-size: 20px;
@@ -162,46 +194,50 @@
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
-    z-index: 10;
+    z-index: 10; /* Поверх других элементов */
     padding: 0;
 }
 
+/* Эффекты при наведении на кнопку закрытия */
 .close-button:hover {
-    background: rgba(30, 20, 50, 0.9);
-    border-color: rgba(160, 120, 240, 0.5);
+    background: rgba(30, 20, 50, 0.95);
+    border-color: rgba(160, 120, 240, 0.6);
     color: rgba(240, 230, 255, 1);
-    transform: scale(1.1);
+    transform: scale(1.1); /* Увеличение */
     box-shadow: 0 0 15px rgba(160, 120, 240, 0.4);
 }
 
 .close-button:active {
-    transform: scale(0.95);
+    transform: scale(0.95); /* Уменьшение при клике */
 }
 
+/* Обертка для input файла */
 .file-input-wrapper {
     position: relative;
     width: 180px;
     height: 240px;
 }
 
+/* Скрытый input файла */
 .photo-input {
     position: absolute;
     width: 100%;
     height: 100%;
-    opacity: 0;
+    opacity: 0; /* Полностью прозрачный */
     cursor: pointer;
-    z-index: 2;
+    z-index: 2; /* Поверх label */
 }
 
+/* Стилизованная область загрузки */
 .file-input-label {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    border: 2px dashed rgba(140, 100, 220, 0.3);
+    border: 2px dashed rgba(140, 100, 220, 0.4); /* Пунктирная граница */
     border-radius: 16px;
-    background: rgba(5, 3, 18, 0.5);
+    background: rgba(8, 4, 20, 0.7);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -211,6 +247,7 @@
     overflow: hidden;
 }
 
+/* Анимация блеска при наведении */
 .file-input-label::before {
     content: '';
     position: absolute;
@@ -221,26 +258,29 @@
     background: linear-gradient(
         90deg,
         transparent,
-        rgba(140, 100, 220, 0.1),
+        rgba(140, 100, 220, 0.2),
         transparent
     );
     transition: left 0.6s;
 }
 
+/* Эффекты при наведении на область загрузки */
 .file-input-label:hover {
-    border-color: rgba(160, 120, 240, 0.5);
-    background: rgba(15, 10, 35, 0.6);
+    border-color: rgba(160, 120, 240, 0.6);
+    background: rgba(15, 10, 35, 0.8);
     box-shadow: 
-        0 0 35px rgba(120, 80, 200, 0.3),
-        inset 0 0 20px rgba(140, 100, 220, 0.1);
+        0 0 35px rgba(120, 80, 200, 0.4),
+        inset 0 0 20px rgba(140, 100, 220, 0.15);
 }
 
+/* Активация анимации блеска */
 .file-input-label:hover::before {
     left: 100%;
 }
 
+/* Текст в области загрузки */
 .file-input-text {
-    color: rgba(200, 180, 255, 0.8);
+    color: rgba(200, 180, 255, 0.9);
     font-size: 14px;
     text-align: center;
     font-weight: 500;
@@ -249,94 +289,107 @@
     transition: all 0.3s ease;
 }
 
+/* Эффект для текста при наведении */
 .file-input-label:hover .file-input-text {
-    color: rgba(230, 220, 255, 0.95);
-    text-shadow: 0 0 8px rgba(160, 120, 240, 0.5);
+    color: rgba(230, 220, 255, 1);
+    text-shadow: 0 0 8px rgba(160, 120, 240, 0.6);
 }
 
-.file-input-label::after {
-    font-size: 48px;
-    margin-bottom: 15px;
-    filter: drop-shadow(0 0 10px rgba(140, 100, 220, 0.3));
-    transition: all 0.3s ease;
+/* Предпросмотр аватара */
+.avatar-preview {
+    width: 100%;
+    height: 100%;
+    border-radius: 14px;
+    object-fit: cover; /* Заполнение области */
+    display: none; /* Скрыт по умолчанию */
 }
 
-.file-input-label:hover::after {
-    transform: scale(1.1);
-    filter: drop-shadow(0 0 15px rgba(160, 120, 240, 0.6));
+/* Скрываем текст при наличии изображения */
+.file-input-label.has-image .file-input-text {
+    display: none;
 }
 
+/* Показываем превью при наличии изображения */
+.file-input-label.has-image .avatar-preview {
+    display: block;
+}
+
+/* Контейнер кнопок */
 .photo-button {
     display: flex;
-    gap: 10px;
+    gap: 10px; /* Расстояние между кнопками */
     justify-content: center;
     width: 100%;
-    flex-wrap: wrap;
+    flex-wrap: wrap; /* Перенос на маленьких экранах */
 }
 
+/* Общие стили для кнопок */
 .save_button, .cancel_button, .deleate_button {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 85px;
     height: 32px;
-    border: 1px solid rgba(140, 100, 220, 0.3);
+    border: none;
     border-radius: 8px;
     cursor: pointer;
     overflow: hidden;
     text-decoration: none;
     font-weight: 500;
     font-size: 12px;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.5px; /* Разреженные буквы */
     transition: all 0.3s ease;
     position: relative;
-    text-transform: uppercase;
-    background: rgba(10, 6, 25, 0.7);
+    text-transform: uppercase; /* Заглавные буквы */
+    background: rgba(15, 10, 35, 0.8);
     color: rgba(200, 180, 255, 0.9);
-    backdrop-filter: blur(10px);
 }
 
+/* Специфичные стили для каждой кнопки */
 .save_button {
-    border-color: rgba(160, 120, 240, 0.4);
+    border: 1px solid rgba(160, 120, 240, 0.5);
     color: rgba(220, 200, 255, 0.95);
 }
 
 .cancel_button {
-    border-color: rgba(120, 100, 180, 0.3);
+    border: 1px solid rgba(120, 100, 180, 0.4);
     color: rgba(180, 160, 220, 0.9);
 }
 
 .deleate_button {
-    border-color: rgba(220, 100, 150, 0.4);
+    border: 1px solid rgba(220, 100, 150, 0.5);
     color: rgba(255, 160, 200, 0.9);
 }
 
+/* Эффекты при наведении на кнопки */
 .save_button:hover, .cancel_button:hover, .deleate_button:hover {
-    background: rgba(20, 15, 40, 0.8);
-    border-color: rgba(160, 120, 240, 0.5);
-    color: rgba(240, 230, 255, 0.95);
+    background: rgba(25, 20, 45, 0.9);
+    border-color: rgba(160, 120, 240, 0.6);
+    color: rgba(240, 230, 255, 1);
     box-shadow: 
-        0 0 20px rgba(120, 80, 200, 0.2),
+        0 0 20px rgba(120, 80, 200, 0.3),
         inset 0 0 20px rgba(140, 100, 220, 0.1);
-    transform: translateY(-1px);
+    transform: translateY(-1px); /* Подъем */
 }
 
+/* Индивидуальные эффекты для кнопок */
 .save_button:hover {
-    border-color: rgba(180, 140, 255, 0.6);
-    box-shadow: 0 0 25px rgba(160, 120, 240, 0.3);
+    border-color: rgba(180, 140, 255, 0.7);
+    box-shadow: 0 0 25px rgba(160, 120, 240, 0.4);
 }
 
 .deleate_button:hover {
-    border-color: rgba(220, 100, 150, 0.6);
-    box-shadow: 0 0 25px rgba(220, 100, 150, 0.3);
+    border-color: rgba(220, 100, 150, 0.7);
+    box-shadow: 0 0 25px rgba(220, 100, 150, 0.4);
 }
 
+/* Эффект нажатия */
 .save_button:active, .cancel_button:active, .deleate_button:active {
-    transform: translateY(0);
+    transform: translateY(0); /* Возврат на место */
     background: rgba(8, 4, 18, 0.9);
 }
 
-/* Анимация звездного неба */
+/* Анимация мерцания звезд */
 @keyframes twinkle {
     0%, 100% { opacity: 0.3; }
     50% { opacity: 1; }
@@ -346,9 +399,10 @@
     position: absolute;
     background: #d8c8ff;
     border-radius: 50%;
-    animation: twinkle 3s infinite;
+    animation: twinkle 3s infinite; /* Бесконечное мерцание */
 }
 
+/* Разные цвета и задержки для звезд */
 .star:nth-child(odd) {
     background: #c0a8ff;
     animation-delay: 1.5s;
@@ -359,9 +413,58 @@
     animation-delay: 1s;
 }
 
-/* Адаптивность */
+/* Дополнительный декоративный градиент */
+.photo-content::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, 
+        transparent, 
+        rgba(80, 40, 140, 0.1), 
+        rgba(100, 60, 160, 0.15), 
+        rgba(80, 40, 140, 0.1), 
+        transparent
+    );
+    border-radius: 22px;
+    z-index: -1;
+    animation: nebulaPulse 8s ease-in-out infinite; /* Пульсация туманности */
+}
+
+/* Анимация пульсации туманности */
+@keyframes nebulaPulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.8; }
+}
+
+/* Стили для сообщений */
+.message {
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin: 10px 0;
+    font-size: 14px;
+    text-align: center;
+}
+
+/* Сообщение об успехе */
+.message.success {
+    background: rgba(40, 167, 69, 0.2);
+    border: 1px solid rgba(40, 167, 69, 0.3);
+    color: #98fb98;
+}
+
+/* Сообщение об ошибке */
+.message.error {
+    background: rgba(220, 53, 69, 0.2);
+    border: 1px solid rgba(220, 53, 69, 0.3);
+    color: #ffb6c1;
+}
+
+/* Адаптивность для планшетов */
 @media (max-width: 768px) {
-    .photo-container {
+    .photo-content {
         max-width: 280px;
         height: 460px;
         padding: 20px 15px;
@@ -373,7 +476,7 @@
     }
     
     .photo-button {
-        flex-direction: column;
+        flex-direction: column; /* Вертикальное расположение кнопок */
         align-items: center;
     }
     
@@ -383,28 +486,26 @@
     }
 }
 
-/* Дополнительные космические элементы */
-.photo-container::before {
-    content: '';
-    position: absolute;
-    top: -2px;
-    left: -2px;
-    right: -2px;
-    bottom: -2px;
-    background: linear-gradient(45deg, 
-        transparent, 
-        rgba(80, 40, 140, 0.08), 
-        rgba(100, 60, 160, 0.12), 
-        rgba(80, 40, 140, 0.08), 
-        transparent
-    );
-    border-radius: 22px;
-    z-index: -1;
-    animation: nebulaPulse 8s ease-in-out infinite;
+/* Адаптивность для мобильных */
+@media (max-width: 480px) {
+    .info-container {
+        height: 80px;
+        padding: 15px;
+    }
+    
+    .user-avatar {
+        width: 60px;
+        height: 60px;
+        font-size: 20px;
+    }
+    
+    .photo-content {
+        max-width: 250px;
+        height: 420px;
+    }
+    
+    .file-input-wrapper {
+        width: 140px;
+        height: 190px;
+    }
 }
-
-@keyframes nebulaPulse {
-    0%, 100% { opacity: 0.3; }
-    50% { opacity: 0.6; }
-}
-
