@@ -1,0 +1,395 @@
+/* Оверлей - фон для модальных окон */
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(37, 20, 71, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 9;
+}
+
+.overlay.show {
+    display: block;
+}
+
+/* Модальные окна - скрыты по умолчанию */
+.photo-container, .post-container {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    width: auto;
+    height: auto;
+}
+
+.photo-container.show, .post-container.show {
+    display: flex;
+}
+
+/* Контент модалок - темный с фиолетовыми акцентами */
+.photo-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 500px;
+    width: 300px;
+    flex-direction: column;
+    background: rgba(10, 6, 25, 0.98);
+    border: 1px solid rgba(120, 80, 200, 0.3);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 
+        0 15px 35px rgba(40, 0, 80, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        0 0 60px rgba(80, 40, 160, 0.4);
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+}
+
+/* ВОССТАНОВЛЕННЫЙ КОНТЕЙНЕР ПОСТА */
+.post-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 600px; /* ВЕРНУЛ КАК БЫЛО */
+    width: 300px; /* ВЕРНУЛ КАК БЫЛО */
+    flex-direction: column;
+    background: rgba(10, 6, 25, 0.98);
+    border: 1px solid rgba(120, 80, 200, 0.3);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 
+        0 15px 35px rgba(40, 0, 80, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        0 0 60px rgba(80, 40, 160, 0.4);
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Декоративные линии и анимации */
+.photo-content::before, .post-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(140, 100, 220, 0.5), 
+        transparent
+    );
+}
+
+.photo-content::after, .post-content::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, 
+        transparent, 
+        rgba(80, 40, 140, 0.1), 
+        rgba(100, 60, 160, 0.15), 
+        rgba(80, 40, 140, 0.1), 
+        transparent
+    );
+    border-radius: 22px;
+    z-index: -1;
+    animation: nebulaPulse 8s ease-in-out infinite;
+}
+
+@keyframes nebulaPulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.8; }
+}
+
+/* Формы внутри модалок */
+.photo-form, .post-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: auto;
+    gap: 20px;
+    position: relative;
+    z-index: 2;
+}
+
+/* Заголовки */
+.heading {
+    text-transform: uppercase;
+    text-align: center;
+    margin: 0;
+    font-size: 1.4em;
+    font-weight: 600;
+    color: rgba(230, 220, 255, 0.95);
+    text-shadow: 0 0 12px rgba(160, 120, 240, 0.4);
+    letter-spacing: 2px;
+    width: 100%;
+}
+
+/* ВОССТАНОВЛЕННЫЙ ЗАГОЛОВОК ПОСТА */
+.post-heading {
+    position: relative;
+    text-transform: uppercase;
+    text-align: center;
+    top: -50px; /* ВЕРНУЛ КАК БЫЛО */
+    margin: 0;
+    font-size: 1.4em;
+    font-weight: 600;
+    color: rgba(230, 220, 255, 0.95);
+    text-shadow: 0 0 12px rgba(160, 120, 240, 0.4);
+    letter-spacing: 2px;
+    width: 100%;
+}
+
+/* Кнопки закрытия - ДВЕ РАЗНЫЕ КНОПКИ */
+.close-button {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(20, 15, 40, 0.9);
+    border: 1px solid rgba(140, 100, 220, 0.4);
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    font-size: 18px;
+    cursor: pointer;
+    color: rgba(200, 180, 255, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 11;
+}
+
+.close-button-post {
+    position: fixed;
+    top: 35px; /* ВЕРНУЛ КАК БЫЛО */
+    right: 20px;
+    background: rgba(20, 15, 40, 0.9);
+    border: 1px solid rgba(140, 100, 220, 0.4);
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    font-size: 18px;
+    cursor: pointer;
+    color: rgba(200, 180, 255, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 11;
+}
+
+/* Ховер эффекты для ОБЕИХ кнопок */
+.close-button:hover, .close-button-post:hover {
+    background: rgba(30, 20, 50, 0.95);
+    border-color: rgba(160, 120, 240, 0.6);
+    color: rgba(240, 230, 255, 1);
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(160, 120, 240, 0.4);
+}
+
+.close-button:active, .close-button-post:active {
+    transform: scale(0.95);
+}
+
+/* Контейнеры для загрузки файлов */
+.file-input-wrapper {
+    position: relative;
+    width: 180px;
+    height: 240px;
+}
+
+/* ВОССТАНОВЛЕННЫЙ КОНТЕЙНЕР ДЛЯ ЗАГРУЗКИ ПОСТА */
+.file-input-wrapper_post {
+    position: relative;
+    top: -50px; /* ВЕРНУЛ КАК БЫЛО */
+    width: 200px;
+    height: 270px;
+}
+
+/* Скрытые инпуты для файлов */
+.photo-input, .post-input {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 2;
+}
+
+/* Кастомные лейблы для загрузки */
+.file-input-label, .post-input-label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 2px dashed rgba(140, 100, 220, 0.8);
+    border-radius: 16px;
+    background: rgba(8, 4, 20, 0.7);
+    box-shadow: 0 0 15px rgba(160, 120, 240, 0.4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    overflow: hidden;
+}
+
+/* Текст в области загрузки */
+.file-input-text, .post-input-text {
+    color: rgba(200, 180, 255, 0.9);
+    font-size: 14px;
+    text-align: center;
+    font-weight: 500;
+    line-height: 1.4;
+    padding: 0 15px;
+    transition: all 0.3s ease;
+}
+
+/* Преiew изображений */
+.avatar-preview, .post-preview {
+    width: 100%;
+    height: 100%;
+    border-radius: 14px;
+    object-fit: cover;
+    display: none;
+}
+
+/* ВОССТАНОВЛЕННОЕ ТЕКСТОВОЕ ПОЛЕ */
+#post-text {
+    position: relative;
+    top: 45%; /* ВЕРНУЛ КАК БЫЛО */
+    right: 35%; /* ВЕРНУЛ КАК БЫЛО */
+    width: 200px;
+    height: 100px;
+}
+
+.form-control {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    min-height: 100px;
+    padding: 12px;
+    background: rgba(15, 10, 35, 0.8);
+    border: 1px solid rgba(120, 80, 200, 0.4);
+    border-radius: 8px;
+    color: rgba(230, 220, 255, 0.9);
+    font-size: 14px;
+    resize: vertical;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/* Контейнеры кнопок */
+.photo-button {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+/* ВОССТАНОВЛЕННЫЙ КОНТЕЙНЕР КНОПОК ПОСТА */
+.post-button {
+    display: flex;
+    position: relative;
+    top: 80px; /* ВЕРНУЛ КАК БЫЛО */
+    gap: 10px;
+    justify-content: center;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+/* Стили кнопок действий */
+.save_button, .cancel_button, .deleate_button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 85px;
+    height: 32px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    background: rgba(15, 10, 35, 0.8);
+    color: rgba(200, 180, 255, 0.9);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Цветовые варианты кнопок */
+.save_button {
+    border: 1px solid rgba(160, 120, 240, 0.5);
+    color: rgba(220, 200, 255, 0.95);
+}
+
+.cancel_button {
+    border: 1px solid rgba(120, 100, 180, 0.4);
+    color: rgba(180, 160, 220, 0.9);
+}
+
+.deleate_button {
+    border: 1px solid rgba(220, 100, 150, 0.5);
+    color: rgba(255, 160, 200, 0.9);
+}
+
+/* Ховер эффекты для всех кнопок */
+.save_button:hover, .cancel_button:hover, .deleate_button:hover {
+    background: rgba(25, 20, 45, 0.9);
+    border-color: rgba(160, 120, 240, 0.6);
+    color: rgba(240, 230, 255, 1);
+    box-shadow: 
+        0 0 20px rgba(120, 80, 200, 0.3),
+        inset 0 0 20px rgba(140, 100, 220, 0.1);
+    transform: translateY(-1px);
+}
+
+/* Индивидуальные цвета при ховере */
+.save_button:hover {
+    border-color: rgba(180, 140, 255, 0.7);
+    box-shadow: 0 0 25px rgba(160, 120, 240, 0.4);
+}
+
+.deleate_button:hover {
+    border-color: rgba(220, 100, 150, 0.7);
+    box-shadow: 0 0 25px rgba(220, 100, 150, 0.4);
+}
+
+/* Активное состояние кнопок */
+.save_button:active, .cancel_button:active, .deleate_button:active {
+    transform: translateY(0);
+    background: rgba(8, 4, 18, 0.9);
+}
+
+/* Эффекты при фокусе на текстовом поле */
+.form-control:focus {
+    outline: none;
+    border-color: rgba(160, 120, 240, 0.6);
+    box-shadow: 0 0 15px rgba(120, 80, 200, 0.3);
+    background: rgba(20, 15, 40, 0.9);
+}
+
+/* ТОЛЬКО АДАПТИВНЫЕ СТИЛИ ДЛЯ МАЛЕНЬКИХ ЭКРАНОВ */

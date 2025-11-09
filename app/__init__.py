@@ -16,9 +16,11 @@ def create_app(config_class=Config):
     # Регистрируем блюпринты
     from .routes.post import post
     from .routes.user import user
+    from .routes.chat import chat
     
     app.register_blueprint(post)
     app.register_blueprint(user)
+    app.register_blueprint(chat)
     
     # Настраиваем login_manager
     login_manager.login_view = 'user.login'

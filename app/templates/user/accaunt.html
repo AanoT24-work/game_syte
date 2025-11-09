@@ -1,57 +1,179 @@
 {% extends 'main/main.html' %}
 
-{% block title %}Мой аккаунт{% endblock %}
+{% block title %}
+    {% if current_user.is_authenticated and current_user.id == user.id %}
+        Мой аккаунт
+    {% else %}
+        Аккаунт {{ user.login }}
+    {% endif %}
+{% endblock %}
 
 {% block style %}
     <link rel="stylesheet" href="{{url_for('static', filename='css/blocks/body/accaunt.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/blocks/body/modal/user-post_overlay.css')}}">
 {% endblock %}
 
 {% block content %}
 <div class="main-container">
     <div class="accaunt-container">
         <div class="info-container">
-            <button class="user-avatar" id="openAvatarModal">
-                {% if current_user.avatar %}
-                    <img src="{{ url_for('static', filename='upload/avatars/' + current_user.avatar) }}" alt="Аватар">
+            <!-- Кнопка аватара активна только для хозяина аккаунта -->
+            {% if current_user.is_authenticated and current_user.id == user.id %}
+                <button class="user-avatar" id="openAvatarModal" data-has-avatar="{{ 'true' if user.avatar and user.avatar != 'default_avatar.png' else 'false' }}">
+                    {% if user.avatar and user.avatar != 'default_avatar.png' %}
+                        <img src="{{ url_for('user.get_avatar', user_id=user.id) }}?t={{ user.updated_at.timestamp() if user.updated_at else '' }}" alt="Аватар">
+                    {% else %}
+                        <span>👤</span>
+                    {% endif %}
+                </button>
+            {% else %}
+                <!-- Для других пользователей - просто отображение аватара без кнопки -->
+                <div class="user-avatar-static">
+                    {% if user.avatar and user.avatar != 'default_avatar.png' %}
+                        <img src="{{ url_for('user.get_avatar', user_id=user.id) }}?t={{ user.updated_at.timestamp() if user.updated_at else '' }}" alt="Аватар">
+                    {% else %}
+                        <span>👤</span>
+                    {% endif %}
+                </div>
+            {% endif %}
+            
+            <span class="publication-text">
+                {% if current_user.is_authenticated and current_user.id == user.id %}
+                    Мой аккаунт
                 {% else %}
-                    <span>👤</span>
+                    Аккаунт {{ user.login }}
                 {% endif %}
-            </button>
+            </span>
+            
+            <!-- Кнопка добавления поста только для хозяина аккаунта -->
+            {% if current_user.is_authenticated and current_user.id == user.id %}
+                <button class="add_nev-post" id="openPostModal">➕</button>
+            {% endif %}
         </div>
+    </div>
+
+    <!-- Блок постов пользователя -->
+    <div class="user-posts-container" style="padding: 20px; color: white;">
+        <div class="post-information">
+            <h3>
+                {% if current_user.is_authenticated and current_user.id == user.id %}
+                    Мои публикации
+                {% else %}
+                    Публикации {{ user.login }}
+                {% endif %}
+            </h3>
+        </div>
+        <div class="posts-grid">
+            {% for post in posts %}
+                <div class="post-item">
+                    {% if post.image %}
+                        <div class="post-image-container">
+                            <img src="{{ url_for('post.get_post_image', post_id=post.id) }}" 
+                                alt="Изображение поста" 
+                                class="post-image"
+                                loading="lazy">
+                        </div>
+                    {% endif %}
+                    <p class="post-content">{{ post.content }}</p>
+                    <small class="post-date">{{ post.created_at.strftime('%d.%m.%Y %H:%M') }}</small>
+                    
+                    <!-- Кнопка удаления поста только для автора поста -->
+                    {% if current_user.is_authenticated and current_user.id == post.user_id %}
+                    <form method="POST" action="{{ url_for('post.delete_post', post_id=post.id) }}" class="delete-post-form">
+                        <button type="submit" class="deleate_button" onclick="return confirm('Удалить этот пост?')">Удалить</button>
+                    </form>
+                    {% endif %}
+                </div>
+            {% else %}
+                <p class="post-have">
+                    {% if current_user.is_authenticated and current_user.id == user.id %}
+                        У вас пока нет постов
+                    {% else %}
+                        У пользователя пока нет постов
+                    {% endif %}
+                </p>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="background-elements">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+        <div class="particles"></div>
     </div>
 </div>
 
 <!-- Оверлей -->
 <div class="overlay" id="overlay"></div>
 
-<!-- Модальное окно -->
+<!-- Модальное окно для аватара (только для хозяина аккаунта) -->
+{% if current_user.is_authenticated and current_user.id == user.id %}
 <div class="photo-container" id="photoContainer">
     <div class="photo-content">
-        <!-- ИСПОЛЬЗУЙ FORM ИЗ FLASK-WTF С CSRF ТОКЕНОМ -->
-        <form class="photo-form" id="avatarForm" method="POST" enctype="multipart/form-data">
-            {{ form.hidden_tag() }}  <!-- ← ВАЖНО: CSRF токен -->
+        <form class="photo-form" id="avatarForm" method="POST" action="{{ url_for('user.upload_avatar_ajax') }}" enctype="multipart/form-data">
+            {{ accaunt_form.hidden_tag() }}
             
-            <button type="button" class="close-button" id="closeButton">&times;</button>
+            <button type="button" class="close-button" id="closeAvatarButton">&times;</button>
             <p class="heading">Аватар</p>
             
             <div class="file-input-wrapper">
-                <!-- ИСПОЛЬЗУЙ ПОЛЕ ИЗ FLASK-WTF ФОРМЫ -->
-                {{ form.avatar(class="photo-input", id="fileInput", accept="image/*") }}
+                {{ accaunt_form.avatar(class="photo-input", id="fileInput", accept="image/*") }}
                 
                 <label for="fileInput" class="file-input-label" id="fileInputLabel">
-                    <img class="avatar-preview" id="avatarPreview" alt="Предпросмотр">
-                    <span class="file-input-text">Нажмите чтобы выбрать изображение</span>
+                    <!-- Превью аватара -->
+                    {% if user.avatar %}
+                        <img class="avatar-preview" id="avatarPreview" 
+                             src="{{ url_for('user.get_avatar', user_id=user.id) }}" 
+                             alt="Предпросмотр аватара">
+                    {% else %}
+                        <img class="avatar-preview" id="avatarPreview" 
+                             src="" 
+                             alt="Предпросмотр аватара" style="display: none;">
+                    {% endif %}
+                    <span class="file-input-text" id="fileInputText">Нажмите чтобы выбрать изображение для аватара</span>
                 </label>
             </div>
 
             <div class="photo-button">
-                {{ form.push(class="save_button", type="submit") }}  <!-- Кнопка отправки формы -->
-                <button type="button" class="cancel_button" id="cancelButton">Отмена</button>
+                <button type="submit" class="save_button">Сохранить</button>
+                <button type="button" class="cancel_button" id="cancelAvatarButton">Отмена</button>
+                <button type="button" class="deleate_button" id="deleteButton">Удалить аватар</button>
             </div>
-            {{ form.deleate(class="deleate_button", id="deleteButton", type="button") }}  <!-- Кнопка удаления -->
         </form>
     </div>
 </div>
+
+<!-- Модальное окно для поста (только для хозяина аккаунта) -->
+<div class="post-container" id="postContainer" style="display: none;">
+    <div class="post-content">
+        <form class="post-form" id="postForm" method="POST" action="{{ url_for('post.create_post') }}" enctype="multipart/form-data">
+            {{ post_form.hidden_tag() }}
+            
+            <button type="button" class="close-button-post" id="closePostButton">&times;</button>
+            <p class="post-heading">Создать пост</p>
+            
+            <div class="file-input-wrapper_post">
+                {{ post_form.image(class="post-input", id="postInput", accept="image/*") }}
+                
+                <label for="postInput" class="post-input-label" id="postInputLabel">
+                    <img class="post-preview" id="postPreview" src="">
+                    <span class="post-input-text">Нажмите чтобы выбрать изображение для публикации</span>
+                </label>
+                
+                <div class="mb-3" id="post-text">
+                    {{ post_form.content(class="form-control", placeholder="Что у вас нового?")}}
+                </div>
+            </div>
+
+            <div class="post-button">
+                <button type="submit" class="save_button">Сохранить</button>
+                <button type="button" class="cancel_button" id="cancelPostButton">Отмена</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endif %}
 
 <script src="{{ url_for('static', filename='js/body/accaunt.js') }}"></script>
 {% endblock %}

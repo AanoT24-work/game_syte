@@ -10,7 +10,8 @@ def load_user(user_id):
 # Модель пользователя
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
-    posts = db.relationship('Post', backref='user', lazy=True)  # ← строка как строка!
+    posts = db.relationship('Post', backref='user', lazy=True)
+    comments = db.relationship('Comment', backref='user', lazy=True)  # Добавил связь с комментариями
     status = db.Column(db.String(50), default='user')
     login = db.Column(db.String(50))
     password = db.Column(db.String(200))

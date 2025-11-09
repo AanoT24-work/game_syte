@@ -17,7 +17,7 @@ function initAutoHideAlerts() {
         
         // Ищем кнопку закрытия ВНУТРИ текущего алерта
         // querySelector ищет только внутри элемента alert (не по всей странице)
-        const closeButton = alert.querySelector('.close-button');
+        const closeButton = alert.querySelector('.close-button-flash');
         
         // Проверяем, была ли найдена кнопка закрытия
         // if (closeButton) означает: "если closeButton не равен null или undefined"

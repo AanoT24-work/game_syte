@@ -1,18 +1,24 @@
-from flask import Blueprint, flash, redirect, render_template, request, url_for, jsonify, current_app
-from flask_login import current_user, login_user, logout_user
+from flask import Blueprint, flash, redirect, render_template, request, url_for, jsonify, current_app, send_from_directory
+from flask_login import current_user, login_user, logout_user, login_required  # Добавьте login_required
 import os
 from sqlalchemy.exc import IntegrityError
 
-from app.functions import save_picture  # ← ИСПОЛЬЗУЙ СУЩЕСТВУЮЩУЮ ФУНКЦИЮ!
-from app.models import post
+from app.functions import save_picture
+from ..models.post import Post
 
 from ..extensions import db, bcrypt
-from ..form import AccauntForm, LoginForm, RegistrationForm
+from ..form import AccauntForm, LoginForm, RegistrationForm, PostForm
 from ..models.user import User
 
 user = Blueprint('user', __name__)
 
+# Вспомогательная функция для проверки, является ли аватар дефолтным
+def is_default_avatar(avatar_filename):
+    return avatar_filename in [None, '', 'default_avatar.png']
 
+@user.route('/user/support')
+def support():
+    return render_template('user/support.html')
 
 @user.route('/user/register', methods=['POST', 'GET'])
 def register():
@@ -20,7 +26,7 @@ def register():
     
     if current_user.is_authenticated:
         flash("Вы уже авторизованы", "success")
-        return redirect(url_for('post.all'))
+        return redirect(url_for('post.all_posts'))  # ИСПРАВИЛ
     
     if form.validate_on_submit():
         try:
@@ -37,7 +43,7 @@ def register():
             
             login_user(user, remember=True)
             flash(f'Поздравляем {form.login.data}! Вы успешно зарегистрированы и авторизованы', 'success')
-            return redirect(url_for('post.all'))
+            return redirect(url_for('post.all_posts'))  # ИСПРАВИЛ
         
         except Exception as e:
             db.session.rollback()
@@ -46,10 +52,13 @@ def register():
     
     return render_template('user/register.html', form=form)
 
-
 @user.route('/user/login', methods=['POST', 'GET'])
 def login():
     form = LoginForm()
+    
+    if current_user.is_authenticated:
+        return redirect(url_for('post.all_posts'))  # ИСПРАВИЛ
+    
     if form.validate_on_submit():
         user = User.query.filter_by(login=form.login.data).first()
         
@@ -58,7 +67,7 @@ def login():
                 login_user(user, remember=True)
                 next_page = request.args.get('next')
                 flash(f'Поздравляю {form.login.data} вы успешно авторизовались', "success")
-                return redirect(next_page) if next_page else redirect(url_for('post.all'))
+                return redirect(next_page) if next_page else redirect(url_for('post.all_posts'))  # ИСПРАВИЛ
             except Exception as e:
                 print(f'Ошибка входа: {str(e)}')
                 flash('Ошибка входа! Попробуйте еще раз', "danger")
@@ -67,33 +76,52 @@ def login():
             
     return render_template('user/login.html', form=form)
 
-
 @user.route('/user/logout', methods=['POST', 'GET'])
 def logout():
     logout_user()
     return redirect(url_for('user.login'))
 
-
-@user.route('/user/accaunt', methods=['POST', 'GET'])
+@user.route('/user/accaunt')
+@login_required
 def accaunt():
-    form = AccauntForm()
-    
-    if form.validate_on_submit():
-        try:
-            if form.avatar.data:
-                # ИСПОЛЬЗУЙ save_picture вместо save_avatar
-                avatar_filename = save_picture(form.avatar.data, image_type='avatar')
-                current_user.avatar = avatar_filename
-                db.session.commit()
-                flash('Аватар успешно обновлен!', 'success')
-                return redirect(url_for('user.accaunt'))
-                
-        except Exception as e:
-            db.session.rollback()
-            flash(f"Ошибка при загрузке аватара: {str(e)}", "danger")
-    
-    return render_template('user/accaunt.html', form=form)
+    """Страница собственного аккаунта - перенаправление на профиль"""
+    return redirect(url_for('user.profile', user_id=current_user.id))
 
+@user.route('/user/<int:user_id>')
+def profile(user_id):
+    """Страница профиля любого пользователя"""
+    user = User.query.get_or_404(user_id)
+    accaunt_form = AccauntForm()
+    post_form = PostForm()
+    
+    # Получаем посты пользователя
+    user_posts = Post.query.filter_by(user_id=user_id).order_by(Post.created_at.desc()).all()
+    
+    return render_template('user/accaunt.html', 
+                         user=user,
+                         accaunt_form=accaunt_form, 
+                         post_form=post_form,
+                         posts=user_posts)
+
+@user.route('/avatar/<int:user_id>')
+def get_avatar(user_id):
+    """Просмотр аватара любого пользователя"""
+    user = User.query.get_or_404(user_id)
+    
+    # Проверяем существование файла аватара и не является ли он дефолтным
+    if user.avatar and not is_default_avatar(user.avatar):
+        avatar_path = os.path.join(current_app.root_path, 'static', 'upload', 'avatars', user.avatar)
+        if os.path.exists(avatar_path):
+            return send_from_directory(
+                os.path.join(current_app.root_path, 'static', 'upload', 'avatars'),
+                user.avatar
+            )
+    
+    # Возвращаем аватар по умолчанию
+    return send_from_directory(
+        os.path.join(current_app.root_path, 'static', 'upload', 'avatars'),
+        'default_avatar.png'
+    )
 
 # AJAX ЭНДПОИНТЫ ДЛЯ JavaScript
 
@@ -111,7 +139,6 @@ def upload_avatar_ajax():
         if file.filename == '':
             return jsonify({'success': False, 'error': 'Файл не выбран'})
         
-        # ИСПОЛЬЗУЙ save_picture вместо save_avatar
         avatar_filename = save_picture(file, image_type='avatar')
         
         # Обновляем пользователя
@@ -119,7 +146,7 @@ def upload_avatar_ajax():
         db.session.commit()
         
         # Возвращаем URL нового аватара
-        avatar_url = url_for('static', filename=f'upload/avatars/{avatar_filename}')
+        avatar_url = url_for('user.get_avatar', user_id=current_user.id)
         
         return jsonify({
             'success': True, 
@@ -131,7 +158,6 @@ def upload_avatar_ajax():
         db.session.rollback()
         return jsonify({'success': False, 'error': str(e)})
 
-
 @user.route('/delete-avatar', methods=['POST'])
 def delete_avatar_ajax():
     """API endpoint для удаления аватара через AJAX"""
@@ -140,7 +166,7 @@ def delete_avatar_ajax():
     
     try:
         # Удаляем старый файл аватара (если он не дефолтный)
-        if current_user.avatar and current_user.avatar != 'default_avatar.png':
+        if current_user.avatar and not is_default_avatar(current_user.avatar):
             avatar_path = os.path.join(
                 current_app.root_path, 
                 'static', 'upload', 'avatars', 
@@ -149,12 +175,12 @@ def delete_avatar_ajax():
             if os.path.exists(avatar_path):
                 os.remove(avatar_path)
         
-        # Устанавливаем аватар по умолчанию
-        current_user.avatar = 'default_avatar.png'
+        # Устанавливаем аватар как None вместо 'default_avatar.png'
+        current_user.avatar = None
         db.session.commit()
         
         # URL дефолтного аватара
-        default_avatar_url = url_for('static', filename='upload/avatars/default_avatar.png')
+        default_avatar_url = url_for('user.get_avatar', user_id=current_user.id)
         
         return jsonify({
             'success': True,

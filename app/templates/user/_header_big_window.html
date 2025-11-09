@@ -2,15 +2,15 @@
     <div class="stars">{%include 'blocks/header/_space_texture.html'%}</div>
     <div class="header" role="banner">
         <div class="logo">
-            <a href="{{url_for('post.all')}}">
+            <a href="{{url_for('post.all_posts')}}">
                 <img class="image-logo">
             </a>
-            <a href="{{url_for('post.all')}}" class="button-logo">CosmoSMS</a>
+            <a href="{{url_for('post.all_posts')}}" class="button-logo">CosmoSMS</a>
         </div>
         <nav class="header-nav" role="navigation" aria-label="Main Navigation">
-            <a href="{{url_for('post.all')}}" class="button-nav">Главная</a>
-            <a href="{{url_for('post.all')}}" class="button-nav">Общение</a>
-            <a href="{{url_for('post.all')}}" class="button-nav">Поддержка</a>
+            <a href="{{url_for('post.all_posts')}}" class="button-nav">Главная</a>
+            <a href="{{url_for('chat.messenger')}}" class="button-nav">Общение</a>
+            <a href="{{url_for('user.support')}}" class="button-nav">Поддержка</a>
         </nav>
         
         <div class="button-authentication" role="group" aria-label="User Authentication">

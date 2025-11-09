@@ -1,0 +1,176 @@
+{% extends 'main/main.html' %}
+
+{% block title %}Поддержка{% endblock %}
+
+{% block style %}
+    <link rel="stylesheet" href="{{url_for('static', filename='css/blocks/body/modal/support.css')}}">
+{% endblock %}
+
+{% block content %}
+
+<div class="support-container">
+    <div class="support-header">
+        <div class="header-glow"></div>
+        <h3>Центр поддержки</h3>
+        <div class="support-subtitle">Мы здесь, чтобы помочь вам</div>
+    </div>
+
+    <div class="support-grid">
+        <!-- Карточка контактов -->
+        <div class="support-card contact-card">
+            <div class="card-glow"></div>
+            <div class="card-icon">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M22 16.92V19.92C22 20.52 21.53 21 20.93 21C11.18 21 3 12.82 3 3.07C3 2.47 3.48 2 4.08 2H7.08C7.68 2 8.16 2.48 8.16 3.08C8.16 4.03 8.36 4.95 8.74 5.79C8.87 6.1 8.82 6.45 8.61 6.71L7.48 8.14C8.98 11.12 11.37 13.51 14.35 15.01L15.78 13.88C16.05 13.67 16.39 13.62 16.7 13.75C17.54 14.13 18.46 14.33 19.41 14.33C20.01 14.33 20.49 14.81 20.49 15.41V18.41C20.49 19.01 20.01 19.49 19.41 19.49Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <h4>Свяжитесь с нами</h4>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <div class="contact-icon">✉️</div>
+                    <div class="contact-details">
+                        <div class="contact-label">Email</div>
+                        <div class="contact-value">support@nexus.com</div>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">📞</div>
+                    <div class="contact-details">
+                        <div class="contact-label">Телефон</div>
+                        <div class="contact-value">+7 (999) 123-45-67</div>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">🌐</div>
+                    <div class="contact-details">
+                        <div class="contact-label">Telegram</div>
+                        <div class="contact-value">@nexus_support</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Карточка статуса системы -->
+        <div class="support-card status-card">
+            <div class="card-glow"></div>
+            <div class="card-icon">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M13 2L3 14H11L11 22L21 10H13L13 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <h4>Статус системы</h4>
+            <div class="status-list">
+                <div class="status-item">
+                    <div class="status-indicator online"></div>
+                    <div class="status-content">
+                        <div class="status-service">Основной сервер</div>
+                        <div class="status-text">Стабильная работа</div>
+                    </div>
+                </div>
+                <div class="status-item">
+                    <div class="status-indicator online"></div>
+                    <div class="status-content">
+                        <div class="status-service">База данных</div>
+                        <div class="status-text">Оптимальная нагрузка</div>
+                    </div>
+                </div>
+                <div class="status-item">
+                    <div class="status-indicator maintenance"></div>
+                    <div class="status-content">
+                        <div class="status-service">Файловое хранилище</div>
+                        <div class="status-text">Обновление конфигурации</div>
+                    </div>
+                </div>
+                <div class="status-item">
+                    <div class="status-indicator online"></div>
+                    <div class="status-content">
+                        <div class="status-service">API шлюзы</div>
+                        <div class="status-text">Высокая доступность</div>
+                    </div>
+                </div>
+            </div>
+            <div class="status-update">Обновлено: сейчас</div>
+        </div>
+
+        <!-- Карточка помощи -->
+        <div class="support-card help-card">
+            <div class="card-glow"></div>
+            <div class="card-icon">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M9.09 9.00001C9.3251 8.33167 9.78915 7.76811 10.4 7.40914C11.0108 7.05016 11.7289 6.91894 12.4272 7.03872C13.1255 7.15849 13.7588 7.52153 14.2151 8.06353C14.6713 8.60554 14.9211 9.29153 14.92 10C14.92 12 11.92 13 11.92 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12 17H12.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <h4>Помощь и руководства</h4>
+            <div class="help-content">
+                <div class="help-item">
+                    <div class="help-number">01</div>
+                    <div class="help-text">
+                        <div class="help-title">Настройка профиля</div>
+                        <div class="help-desc">Персонализируйте вашу страницу</div>
+                    </div>
+                </div>
+                <div class="help-item">
+                    <div class="help-number">02</div>
+                    <div class="help-text">
+                        <div class="help-title">Безопасность аккаунта</div>
+                        <div class="help-desc">Защитите ваши данные</div>
+                    </div>
+                </div>
+                <div class="help-item">
+                    <div class="help-number">03</div>
+                    <div class="help-text">
+                        <div class="help-title">Публикация контента</div>
+                        <div class="help-desc">Создавайте увлекательные посты</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Карточка сообщества -->
+        <div class="support-card community-card">
+            <div class="card-glow"></div>
+            <div class="card-icon">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M9 11C11.2091 11 13 9.20914 13 7C13 4.79086 11.2091 3 9 3C6.79086 3 5 4.79086 5 7C5 9.20914 6.79086 11 9 11Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M23 21V19C22.9993 18.1137 22.7044 17.2528 22.1614 16.5523C21.6184 15.8519 20.8581 15.3516 20 15.13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M16 3.13C16.8604 3.35031 17.623 3.85071 18.1676 4.55232C18.7122 5.25392 19.0078 6.11683 19.0078 7.005C19.0078 7.89318 18.7122 8.75608 18.1676 9.45769C17.623 10.1593 16.8604 10.6597 16 10.88" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <h4>Сообщество</h4>
+            <div class="community-content">
+                <div class="community-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">24/7</div>
+                        <div class="stat-label">Поддержка</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">99.9%</div>
+                        <div class="stat-label">Доступность</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">5 мин</div>
+                        <div class="stat-label">Среднее время ответа</div>
+                    </div>
+                </div>
+                <div class="community-text">
+                    Присоединяйтесь к нашему растущему сообществу энтузиастов и творцов
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Фоновые элементы -->
+    <div class="background-elements">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+        <div class="particles"></div>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/body/support.js') }}"></script>
+
+{% endblock %}
