@@ -1,3 +1,4 @@
+
 {% extends 'main/main.html' %}
 
 {% block title %}Общение{% endblock %}
@@ -109,9 +110,17 @@
     <div class="message">
         <div class="message-content">
             <div class="message-text"></div>
-            <button class="message-delete-btn" title="Удалить">×</button>
+            <div class="message-actions">
+                <!-- Кнопка редактирования -->
+                <button class="message-edit-btn" title="Редактировать">✏️</button>
+                <!-- Кнопка удаления -->
+                <button class="message-delete-btn" title="Удалить">×</button>
+            </div>
         </div>
-        <div class="message-time"></div>
+        <div class="message-time">
+            <span class="message-time-text"></span>
+            <span class="message-edited" style="display: none;"> (ред.)</span>
+        </div>
     </div>
 </template>
 

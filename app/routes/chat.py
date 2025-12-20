@@ -2,7 +2,7 @@ from flask import Blueprint, flash, redirect, render_template, request, send_fil
 from flask_login import current_user, login_required
 import os
 from sqlalchemy import or_
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from app import form
 from app.functions import save_picture
@@ -106,11 +106,8 @@ def get_chats():
             Message.is_read == False
         ).count()
         
-        # ОТЛАДКА: проверяем данные
-        print(f"🔍 CHAT DATA - User ID: {user.id}, Username: {user.login}, Avatar: {user.avatar}")
-        
         chats.append({
-            'user_id': user.id,  # Убедитесь что это поле есть
+            'user_id': user.id,
             'username': user.login,
             'avatar': user.avatar or 'default_avatar.png',
             'last_message': last_message.text if last_message else '',
@@ -154,14 +151,16 @@ def get_messages(user_id):
             'sender_id': msg.sender_id,
             'receiver_id': msg.receiver_id,
             'created_at': msg.created_at.isoformat() if msg.created_at else '',
-            'is_read': msg.is_read
+            'is_read': msg.is_read,
+            'is_edited': msg.is_edited,  # Добавляем поле
+            'edited_at': msg.edited_at.isoformat() if msg.edited_at else None  # Добавляем поле
         })
     
     return jsonify({
         'user': {
             'id': user.id, 
             'username': user.login,
-            'avatar': user.avatar or 'default_avatar.png'  # Гарантируем значение
+            'avatar': user.avatar or 'default_avatar.png'
         },
         'messages': messages_data
     })
@@ -316,3 +315,117 @@ def get_user_avatar(user_id):
         import traceback
         traceback.print_exc()
         return send_from_directory('static', 'images/default_avatar.png')
+
+@chat.route('/edit_message/<int:message_id>', methods=['PUT'])
+@login_required
+def edit_message(message_id):
+    """Редактирование сообщения"""
+    try:
+        data = request.get_json()
+        print(f"📝 EDIT REQUEST - Message ID: {message_id}, Data: {data}")  # Отладка
+        
+        if not data:
+            return jsonify({'error': 'No JSON data received'}), 400
+            
+        new_text = data.get('text', '').strip()
+        if not new_text:
+            return jsonify({'error': 'Сообщение не может быть пустым'}), 400
+        
+        # Получаем сообщение
+        message = Message.query.get(message_id)
+        if not message:
+            print(f"❌ Message {message_id} not found")
+            return jsonify({'error': 'Сообщение не найдено'}), 404
+        
+        print(f"🔍 FOUND MESSAGE - ID: {message.id}, Sender: {message.sender_id}, Current User: {current_user.id}")
+        
+        # Проверяем права на редактирование
+        if message.sender_id != current_user.id:
+            print(f"❌ Permission denied - sender: {message.sender_id}, current user: {current_user.id}")
+            return jsonify({'error': 'Можно редактировать только свои сообщения'}), 403
+        
+        # Проверяем временное ограничение (15 минут)
+        time_limit = datetime.utcnow() - timedelta(minutes=15)
+        if message.created_at < time_limit:
+            print(f"⏰ Message too old to edit - created: {message.created_at}, limit: {time_limit}")
+            return jsonify({'error': 'Сообщение можно редактировать только в течение 15 минут'}), 400
+        
+        # Сохраняем старый текст для истории
+        old_text = message.text
+        
+        print(f"📝 EDITING - Old text: '{old_text}', New text: '{new_text}'")
+        
+        # Обновляем сообщение
+        message.text = new_text
+        message.is_edited = True
+        message.edited_at = datetime.utcnow()
+        
+        # Добавляем в историю (если метод существует)
+        if hasattr(message, 'add_edit_history'):
+            message.add_edit_history(old_text)
+        else:
+            # Если метода нет, просто устанавливаем флаг
+            print("⚠️ add_edit_history method not available")
+        
+        db.session.commit()
+        
+        print(f"✅ Message {message_id} edited successfully")
+        
+        return jsonify({
+            'success': True,
+            'message': 'Сообщение обновлено',
+            'edited_at': message.edited_at.isoformat(),
+            'text': message.text,
+            'created_at': message.created_at.isoformat()  # Добавляем created_at для обновления времени
+        })
+        
+    except Exception as e:
+        print(f"❌ Error editing message: {e}")
+        import traceback
+        traceback.print_exc()
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+
+@chat.route('/get_message_history/<int:message_id>')
+@login_required
+def get_message_history(message_id):
+    """Получение истории редактирования сообщения"""
+    try:
+        print(f"📜 Getting history for message {message_id}")
+        
+        message = Message.query.get(message_id)
+        if not message:
+            print(f"❌ Message {message_id} not found")
+            return jsonify({'error': 'Сообщение не найдено'}), 404
+        
+        # Проверяем права (только участники чата)
+        if message.sender_id != current_user.id and message.receiver_id != current_user.id:
+            print(f"❌ Access denied for user {current_user.id}")
+            return jsonify({'error': 'Нет доступа к истории'}), 403
+        
+        # Получаем историю
+        history = []
+        if hasattr(message, 'get_edit_history'):
+            history = message.get_edit_history()
+        elif message.edit_history:
+            # Пробуем распарсить JSON вручную
+            try:
+                import json
+                history = json.loads(message.edit_history)
+            except:
+                history = []
+        
+        print(f"📜 History retrieved: {len(history)} items")
+        
+        return jsonify({
+            'success': True,
+            'history': history,
+            'is_edited': message.is_edited,
+            'edited_at': message.edited_at.isoformat() if message.edited_at else None
+        })
+        
+    except Exception as e:
+        print(f"❌ Error getting message history: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': str(e)}), 500

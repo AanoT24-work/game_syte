@@ -606,3 +606,1081 @@
         font-size: 14px;
     }
 }
+/* messenger.css - добавить новые стили */
+
+/* Стили для кнопок действий сообщения */
+.message-actions {
+    display: flex;
+    gap: 4px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.message:hover .message-actions {
+    opacity: 1;
+}
+
+.message-edit-btn, .message-delete-btn {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.message-edit-btn:hover {
+    background: rgba(100, 149, 237, 0.3);
+    color: white;
+}
+
+.message-delete-btn:hover {
+    background: rgba(255, 64, 129, 0.3);
+    color: white;
+}
+
+/* Текст с отметкой редактирования */
+.message-edited {
+    font-size: 11px;
+    color: rgba(200, 180, 255, 0.5);
+    font-style: italic;
+}
+
+/* Модальное окно редактирования */
+.edit-message-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
+}
+
+.edit-message-modal {
+    background: rgba(20, 15, 40, 0.95);
+    border: 2px solid rgba(120, 80, 200, 0.6);
+    border-radius: 20px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    animation: slideUp 0.3s ease;
+}
+
+.edit-message-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    border-bottom: 1px solid rgba(120, 80, 200, 0.3);
+}
+
+.edit-message-header h3 {
+    color: rgba(230, 220, 255, 0.95);
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0;
+}
+
+.close-edit-btn {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 24px;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.close-edit-btn:hover {
+    background: rgba(255, 64, 129, 0.2);
+    color: white;
+}
+
+.edit-message-content {
+    padding: 20px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.edit-message-textarea {
+    width: 100%;
+    min-height: 120px;
+    background: rgba(30, 20, 50, 0.8);
+    border: 1px solid rgba(120, 80, 200, 0.4);
+    border-radius: 12px;
+    padding: 15px;
+    color: rgba(230, 220, 255, 0.95);
+    font-size: 14px;
+    font-family: inherit;
+    resize: vertical;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.edit-message-textarea:focus {
+    border-color: rgba(160, 120, 240, 0.8);
+    box-shadow: 0 0 0 2px rgba(160, 120, 240, 0.2);
+}
+
+.edit-message-history {
+    margin-top: 20px;
+    background: rgba(10, 5, 25, 0.8);
+    border-radius: 12px;
+    padding: 15px;
+    border: 1px solid rgba(80, 60, 160, 0.3);
+}
+
+.history-title {
+    color: rgba(200, 180, 255, 0.8);
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.history-title::before {
+    content: '📜';
+}
+
+.history-items {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.history-item {
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(80, 60, 160, 0.2);
+    font-size: 12px;
+    color: rgba(200, 180, 255, 0.7);
+}
+
+.history-item:last-child {
+    border-bottom: none;
+}
+
+.history-time {
+    color: rgba(160, 140, 220, 0.6);
+    font-size: 11px;
+    margin-top: 2px;
+}
+
+.edit-message-actions {
+    display: flex;
+    gap: 12px;
+    padding: 20px;
+    border-top: 1px solid rgba(120, 80, 200, 0.3);
+}
+
+.edit-cancel-btn, .edit-save-btn {
+    flex: 1;
+    padding: 12px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.edit-cancel-btn {
+    background: rgba(255, 64, 129, 0.2);
+    color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(255, 64, 129, 0.4);
+}
+
+.edit-cancel-btn:hover {
+    background: rgba(255, 64, 129, 0.4);
+    color: white;
+}
+
+.edit-save-btn {
+    background: linear-gradient(135deg, rgba(120, 80, 200, 0.9) 0%, rgba(100, 60, 180, 0.8) 100%);
+    color: white;
+    border: 1px solid rgba(160, 120, 240, 0.6);
+}
+
+.edit-save-btn:hover {
+    background: linear-gradient(135deg, rgba(140, 100, 220, 0.95) 0%, rgba(120, 80, 200, 0.9) 100%);
+    box-shadow: 0 5px 20px rgba(120, 80, 200, 0.4);
+}
+
+.edit-save-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Анимации */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Адаптивность для модального окна */
+@media (max-width: 768px) {
+    .edit-message-modal {
+        width: 95%;
+        max-height: 90vh;
+    }
+    
+    .edit-message-header, 
+    .edit-message-content, 
+    .edit-message-actions {
+        padding: 15px;
+    }
+    
+    .message-actions {
+        opacity: 1; /* Всегда показываем кнопки на мобильных */
+    }
+}
+
+/* messenger-chat.css - добавьте в конец файла */
+
+/* Стили для редактирования сообщений */
+.edit-message-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.edit-message-modal {
+    background: white;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.edit-message-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #e0e0e0;
+    background: #f5f5f5;
+}
+
+.edit-message-header h3 {
+    margin: 0;
+    color: #333;
+}
+
+.close-edit-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.close-edit-btn:hover {
+    background: #e0e0e0;
+    color: #333;
+}
+
+.edit-message-content {
+    padding: 20px;
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.edit-message-textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    resize: vertical;
+    font-family: inherit;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.edit-message-textarea:focus {
+    outline: none;
+    border-color: #4a76a8;
+}
+
+.edit-message-history {
+    margin-top: 20px;
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+}
+
+.history-title {
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #666;
+}
+
+.history-items {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.history-item {
+    padding: 10px;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 13px;
+    color: #666;
+}
+
+.history-item:last-child {
+    border-bottom: none;
+}
+
+.history-time {
+    font-size: 11px;
+    color: #999;
+    margin-top: 5px;
+}
+
+.edit-message-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 20px;
+    border-top: 1px solid #e0e0e0;
+    background: #f5f5f5;
+}
+
+.edit-cancel-btn,
+.edit-save-btn {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.edit-cancel-btn {
+    background: #f0f0f0;
+    color: #666;
+}
+
+.edit-cancel-btn:hover {
+    background: #e0e0e0;
+}
+
+.edit-save-btn {
+    background: #4a76a8;
+    color: white;
+}
+
+.edit-save-btn:hover {
+    background: #3a6698;
+}
+
+/* Стили для кнопок редактирования в сообщениях */
+.message-actions {
+    display: flex;
+    gap: 5px;
+    margin-left: 10px;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.message:hover .message-actions {
+    opacity: 1;
+}
+
+.message-edit-btn,
+.message-delete-btn {
+    background: rgba(0, 0, 0, 0.1);
+    border: none;
+    border-radius: 3px;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 12px;
+    color: #666;
+    padding: 0;
+    transition: all 0.2s;
+}
+
+.message-edit-btn:hover {
+    background: #4a76a8;
+    color: white;
+}
+
+.message-delete-btn:hover {
+    background: #e74c3c;
+    color: white;
+}
+
+.message-edited {
+    font-size: 11px;
+    color: #999;
+    margin-left: 5px;
+    font-style: italic;
+}
+.message-edit-btn, .message-delete-btn {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border: none;
+    background: rgba(0,0,0,0.1);
+    border-radius: 3px;
+    cursor: pointer;
+    margin-left: 5px;
+    font-size: 12px;
+}
+
+.message-actions {
+    display: flex;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.message:hover .message-actions {
+    opacity: 1;
+}
+/* ... предыдущие стили ... */
+
+/* СТИЛИ ДЛЯ МОДАЛЬНОГО ОКНА РЕДАКТИРОВАНИЯ */
+.edit-message-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    animation: fadeIn 0.3s ease;
+}
+
+.edit-message-modal {
+    background: rgba(20, 15, 40, 0.95);
+    border: 2px solid rgba(120, 80, 200, 0.6);
+    border-radius: 20px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    animation: slideUp 0.3s ease;
+    overflow: hidden;
+}
+
+.edit-message-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    border-bottom: 1px solid rgba(120, 80, 200, 0.3);
+    background: rgba(30, 20, 50, 0.8);
+}
+
+.edit-message-header h3 {
+    color: rgba(230, 220, 255, 0.95);
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0;
+}
+
+.close-edit-btn {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 28px;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    padding: 0;
+    line-height: 1;
+}
+
+.close-edit-btn:hover {
+    background: rgba(255, 64, 129, 0.2);
+    color: white;
+    transform: scale(1.1);
+}
+
+.edit-message-content {
+    padding: 20px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.edit-message-textarea {
+    width: 100%;
+    min-height: 120px;
+    background: rgba(10, 5, 25, 0.8);
+    border: 1px solid rgba(120, 80, 200, 0.4);
+    border-radius: 12px;
+    padding: 15px;
+    color: rgba(230, 220, 255, 0.95);
+    font-size: 14px;
+    font-family: inherit;
+    resize: vertical;
+    outline: none;
+    transition: all 0.3s ease;
+    margin-bottom: 20px;
+}
+
+.edit-message-textarea:focus {
+    border-color: rgba(160, 120, 240, 0.8);
+    box-shadow: 0 0 0 2px rgba(160, 120, 240, 0.2);
+}
+
+.edit-message-textarea::placeholder {
+    color: rgba(200, 180, 255, 0.5);
+}
+
+.edit-message-history {
+    background: rgba(10, 5, 25, 0.8);
+    border-radius: 12px;
+    padding: 15px;
+    border: 1px solid rgba(80, 60, 160, 0.3);
+}
+
+.history-title {
+    color: rgba(200, 180, 255, 0.8);
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.history-title::before {
+    content: '📜';
+    font-size: 16px;
+}
+
+.history-items {
+    max-height: 200px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.history-items::-webkit-scrollbar {
+    width: 4px;
+}
+
+.history-items::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.history-items::-webkit-scrollbar-thumb {
+    background: rgba(120, 80, 200, 0.3);
+    border-radius: 2px;
+}
+
+.history-item {
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(80, 60, 160, 0.2);
+    font-size: 13px;
+    color: rgba(200, 180, 255, 0.7);
+}
+
+.history-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.history-time {
+    color: rgba(160, 140, 220, 0.6);
+    font-size: 11px;
+    margin-top: 4px;
+    font-style: italic;
+}
+
+.edit-message-actions {
+    display: flex;
+    gap: 12px;
+    padding: 20px;
+    border-top: 1px solid rgba(120, 80, 200, 0.3);
+    background: rgba(30, 20, 50, 0.8);
+}
+
+.edit-cancel-btn, .edit-save-btn {
+    flex: 1;
+    padding: 12px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    outline: none;
+}
+
+.edit-cancel-btn {
+    background: rgba(255, 64, 129, 0.2);
+    color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(255, 64, 129, 0.4);
+}
+
+.edit-cancel-btn:hover {
+    background: rgba(255, 64, 129, 0.4);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.edit-save-btn {
+    background: linear-gradient(135deg, rgba(120, 80, 200, 0.9) 0%, rgba(100, 60, 180, 0.8) 100%);
+    color: white;
+    border: 1px solid rgba(160, 120, 240, 0.6);
+}
+
+.edit-save-btn:hover {
+    background: linear-gradient(135deg, rgba(140, 100, 220, 0.95) 0%, rgba(120, 80, 200, 0.9) 100%);
+    box-shadow: 0 5px 20px rgba(120, 80, 200, 0.4);
+    transform: translateY(-2px);
+}
+
+.edit-save-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+/* СТИЛИ ДЛЯ КНОПОК РЕДАКТИРОВАНИЯ В СООБЩЕНИЯХ */
+.message-actions {
+    display: flex !important;
+    gap: 4px;
+    margin-left: 8px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.message:hover .message-actions {
+    opacity: 1;
+}
+
+.message-edit-btn, .message-delete-btn {
+    background: transparent !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: rgba(255, 255, 255, 0.7) !important;
+    cursor: pointer !important;
+    width: 24px !important;
+    height: 24px !important;
+    font-size: 12px !important;
+    border-radius: 4px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.3s ease !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    outline: none !important;
+}
+
+.message-edit-btn:hover {
+    background: rgba(100, 149, 237, 0.3) !important;
+    color: white !important;
+    border-color: rgba(100, 149, 237, 0.5) !important;
+    transform: scale(1.1) !important;
+}
+
+.message-delete-btn:hover {
+    background: rgba(255, 64, 129, 0.3) !important;
+    color: white !important;
+    border-color: rgba(255, 64, 129, 0.5) !important;
+    transform: scale(1.1) !important;
+}
+
+/* Стиль для отредактированных сообщений */
+.message-edited {
+    font-size: 11px !important;
+    color: rgba(200, 180, 255, 0.5) !important;
+    font-style: italic !important;
+    margin-left: 5px !important;
+    display: none;
+}
+
+.message-edited[style*="display: inline"] {
+    display: inline !important;
+}
+
+/* Анимации */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Адаптивность для модального окна редактирования */
+@media (max-width: 768px) {
+    .edit-message-modal {
+        width: 95%;
+        max-height: 90vh;
+        border-radius: 15px;
+    }
+    
+    .edit-message-header, 
+    .edit-message-content, 
+    .edit-message-actions {
+        padding: 15px;
+    }
+    
+    .message-actions {
+        opacity: 1; /* Всегда показываем кнопки на мобильных */
+    }
+    
+    .edit-message-textarea {
+        min-height: 100px;
+        font-size: 16px; /* Увеличиваем для удобства на мобильных */
+    }
+}
+
+@media (max-width: 480px) {
+    .edit-message-modal {
+        width: 100%;
+        height: 100%;
+        max-height: 100%;
+        border-radius: 0;
+        border: none;
+    }
+    
+    .edit-message-actions {
+        flex-direction: column;
+    }
+    
+    .edit-cancel-btn, .edit-save-btn {
+        width: 100%;
+    }
+}
+
+/* Стили для правильного отображения сообщений с кнопками */
+.message-content {
+    display: flex !important;
+    align-items: flex-start !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    min-height: 20px;
+}
+
+.message-text {
+    flex: 1 !important;
+    min-width: 0 !important;
+    word-break: break-word;
+    padding-right: 10px;
+}
+
+.message-time {
+    display: flex;
+    align-items: center;
+    margin-top: 4px;
+    padding-left: 8px;
+}
+
+/* Для входящих сообщений скрываем кнопки */
+.message-in .message-actions {
+    display: none !important;
+}
+
+/* Для исходящих сообщений показываем кнопки при наведении */
+.message-out .message-content:hover .message-actions {
+    opacity: 1;
+}
+/* Стили для модального окна редактирования */
+.edit-message-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+}
+
+.edit-message-modal {
+    background: white;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.edit-message-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.edit-message-header h3 {
+    margin: 0;
+    color: #333;
+    font-size: 18px;
+}
+
+.close-edit-btn {
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: #666;
+    line-height: 1;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.close-edit-btn:hover {
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+.edit-message-content {
+    padding: 20px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.edit-message-textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 14px;
+    resize: vertical;
+    margin-bottom: 20px;
+    font-family: inherit;
+}
+
+.edit-message-textarea:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.edit-message-history {
+    margin-top: 20px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    padding: 15px;
+}
+
+.history-title {
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.history-items {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.history-item {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    font-size: 13px;
+}
+
+.history-item:last-child {
+    border-bottom: none;
+}
+
+.history-time {
+    font-size: 12px;
+    color: #888;
+    margin-top: 5px;
+}
+
+.edit-message-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 20px;
+    border-top: 1px solid #eee;
+    background: #fafafa;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+.edit-cancel-btn, .edit-save-btn {
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+}
+
+.edit-cancel-btn {
+    background: #f0f0f0;
+    color: #666;
+}
+
+.edit-cancel-btn:hover {
+    background: #e0e0e0;
+}
+
+.edit-save-btn {
+    background: #007bff;
+    color: white;
+}
+
+.edit-save-btn:hover {
+    background: #0056b3;
+}
+
+/* Стили для кнопок редактирования/удаления */
+.message-actions {
+    display: flex !important;
+    gap: 4px !important;
+    margin-left: 8px !important;
+    opacity: 0 !important;
+    transition: opacity 0.3s ease !important;
+    align-items: center !important;
+}
+
+.message:hover .message-actions {
+    opacity: 1 !important;
+}
+
+.message-edit-btn, .message-delete-btn {
+    background: transparent !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: rgba(255, 255, 255, 0.7) !important;
+    cursor: pointer !important;
+    width: 24px !important;
+    height: 24px !important;
+    font-size: 12px !important;
+    border-radius: 4px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.3s ease !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    outline: none !important;
+}
+
+.message-edit-btn:hover {
+    background: rgba(100, 149, 237, 0.3) !important;
+    color: white !important;
+    border-color: rgba(100, 149, 237, 0.5) !important;
+    transform: scale(1.1) !important;
+}
+
+.message-delete-btn:hover {
+    background: rgba(255, 64, 129, 0.3) !important;
+    color: white !important;
+    border-color: rgba(255, 64, 129, 0.5) !important;
+    transform: scale(1.1) !important;
+}
+
+/* Скрываем кнопки для входящих сообщений */
+.message-in .message-actions {
+    display: none !important;
+}
+
+/* Всегда показываем кнопки для исходящих сообщений при наведении */
+.message-out .message-actions {
+    display: flex !important;
+}
+
+/* Для мобильных устройств всегда показываем кнопки */
+@media (max-width: 768px) {
+    .message-actions {
+        opacity: 1 !important;
+    }
+}

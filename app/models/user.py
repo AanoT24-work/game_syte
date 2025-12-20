@@ -10,10 +10,17 @@ def load_user(user_id):
 # Модель пользователя
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
-    posts = db.relationship('Post', backref='user', lazy=True)
-    comments = db.relationship('Comment', backref='user', lazy=True)  # Добавил связь с комментариями
+    login = db.Column(db.String(50), unique=True, nullable=False)
+    password = db.Column(db.String(200), nullable=False)
+    avatar = db.Column(db.String(200), default='default_avatar.png')
     status = db.Column(db.String(50), default='user')
-    login = db.Column(db.String(50))
-    password = db.Column(db.String(200))
     date = db.Column(db.DateTime, default=datetime.utcnow)
-    avatar = db.Column(db.String(200))
+    
+    # Relationships
+    posts = db.relationship('Post', backref='user', lazy=True, cascade='all, delete-orphan')
+    comments = db.relationship('Comment', backref='user', lazy=True, cascade='all, delete-orphan')
+    
+
+    
+    def __repr__(self):
+        return f'<User {self.login}>'
