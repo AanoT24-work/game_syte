@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- ДОБАВЬТЕ ЭТУ СТРОЧКУ: -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    
     <link rel="stylesheet" href="{{url_for('static', filename='css/blocks/header/_authentication.css')}}" >
     <link rel="stylesheet" href="{{url_for('static', filename='css/blocks/header/_effects.css')}}" >
     <link rel="stylesheet" href="{{url_for('static', filename='css/blocks/header/_accaunt.css')}}" >
@@ -17,7 +20,6 @@
     <div class="page">
         {%include 'main/_flash.html'%}
         <main class="content">
-            
             {% block content %}{% endblock %}
         </main>
     </div>

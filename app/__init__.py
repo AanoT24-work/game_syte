@@ -2,16 +2,18 @@ from flask import Flask
 from .config import Config
 
 def create_app(config_class=Config):
+    
     app = Flask(__name__)
     app.config.from_object(config_class)
     
     # Инициализируем расширения
-    from .extensions import db, migrate, login_manager
-    from .models.user import User  # ← ИМПОРТИРУЙ ИЗ user.py!
+    from .extensions import db, migrate, login_manager, csrf  # ← ДОБАВЬТЕ csrf
+    from .models.user import User
     
     db.init_app(app)
     migrate.init_app(app, db)
     login_manager.init_app(app)
+    csrf.init_app(app)  # ← ИНИЦИАЛИЗИРУЙТЕ CSRF
     
     # Регистрируем блюпринты
     from .routes.post import post
