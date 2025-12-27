@@ -28,7 +28,7 @@ class SessionRepository:
 
     @staticmethod
     def find_active_session(session_id: int, refresh_token: str) -> Optional[UserSession]:
-        """Найти активную сессию по ID и токену."""
+        """Найти активную сессию по ID и сырому токену."""
         if not session_id or not refresh_token:
             return None
 
@@ -44,6 +44,25 @@ class SessionRepository:
             return None
 
         session.update_last_used()
+        db.session.commit()
+        return session
+
+    @staticmethod
+    def find_active_by_id(session_id: int) -> Optional[UserSession]:
+        """Найти активную сессию только по ID (без проверки токена)."""
+        if not session_id:
+            return None
+            
+        session = db.session.get(UserSession, session_id)
+        if not session:
+            return None
+            
+        # Проверяем активность
+        if not session.is_active():
+            return None
+            
+        session.update_last_used()
+        db.session.commit()
         return session
 
     @staticmethod
@@ -57,25 +76,19 @@ class SessionRepository:
         session = db.session.get(UserSession, session_id)
         if session:
             session.revoke()
+            db.session.commit()
             return True
         return False
 
     @staticmethod
     def update_session_token(session: UserSession, new_refresh_token: str, mark_refreshed: bool = True) -> None:
-        """Обновить токен сессии.
-        
-        Args:
-            session: Сессия для обновления
-            new_refresh_token: Новый refresh токен
-            mark_refreshed: Пометить ли сессию как обновлённую (True при refresh, False при создании)
-        """
+        """Обновить токен сессии."""
         new_hash = UserSession.hash_token(new_refresh_token)
         session.refresh_token_hash = new_hash
         
         if mark_refreshed:
             session.mark_as_refreshed()
         else:
-            # Просто сохраняем изменения без смены статуса
             db.session.add(session)
         
         db.session.commit()
@@ -98,7 +111,8 @@ class SessionRepository:
             session.revoke()
             count += 1
 
-        db.session.commit()
+        if count > 0:
+            db.session.commit()
         return count
 
     @staticmethod

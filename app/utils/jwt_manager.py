@@ -106,11 +106,13 @@ class JWTManager:
     @staticmethod
     def create_token_pair(user: User, session_id: int) -> Tuple[str, str]:
         """Создать пару токенов: access и refresh."""
+        # Access token ДОЛЖЕН содержать session_id!
         access_token = JWTManager.create_access_token({
             'sub': str(user.id),
             'login': user.login,
             'avatar': user.avatar,
-            'status': user.status
+            'status': user.status,
+            'session_id': session_id  # ДОБАВЛЕНО!
         })
 
         refresh_token = JWTManager.create_refresh_token(user.id, session_id)

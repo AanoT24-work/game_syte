@@ -1,6 +1,6 @@
 # app/services/auth_service.py
 
-from datetime import datetime
+import secrets
 from flask import current_app, request
 from app.models.user import User
 from app.repositories.session_repository import SessionRepository
@@ -24,26 +24,35 @@ class AuthService:
         ip_address = request.remote_addr
 
         try:
-            # Создаём сессию с временным хэшем
-            temp_token = "temp"  # временный токен для инициализации
+            # 1. Генерируем сырой токен для БД (не JWT!)
+            raw_refresh_token = secrets.token_urlsafe(64)
+            
+            # 2. Создаём сессию в БД с сырым токеном
             session = SessionRepository.create_session(
                 user_id=user.id,
-                refresh_token=temp_token,
+                refresh_token=raw_refresh_token,  # Сырой токен для хэширования
                 user_agent=user_agent,
                 ip_address=ip_address
             )
 
-            # Генерируем настоящий refresh-токен с session.id
-            access_token, refresh_token = JWTManager.create_token_pair(user, session.id)
-
-            # Обновляем сессию настоящим хэшем, НЕ помечая как refreshed
-            SessionRepository.update_session_token(session, refresh_token, mark_refreshed=False)
+            # 3. Создаем JWT токены для клиента
+            # Access token с session_id
+            access_token = JWTManager.create_access_token({
+                'sub': str(user.id),
+                'login': user.login,
+                'avatar': user.avatar,
+                'status': user.status,
+                'session_id': session.id  # Важно для привязки!
+            })
+            
+            # Refresh token JWT
+            refresh_token_jwt = JWTManager.create_refresh_token(user.id, session.id)
 
             return {
                 'access_token': access_token,
-                'refresh_token': refresh_token,
+                'refresh_token': refresh_token_jwt,  # Клиенту отдаем JWT
                 'token_type': 'bearer',
-                'expires_in': JWTManager._get_default_expiry('access'),
+                'expires_in': current_app.config.get('JWT_ACCESS_TOKEN_EXPIRES', 900),
                 'user': user.to_dict()
             }, None
 
@@ -52,49 +61,60 @@ class AuthService:
             return None, "Ошибка сервера"
 
     @staticmethod
-    def refresh_tokens(refresh_token: str) -> tuple:
+    def refresh_tokens(refresh_token_jwt: str) -> tuple:
         """Обновить токены по refresh токену."""
         try:
-            # 1. Декодируем токен
-            payload = JWTManager.verify_refresh_token(refresh_token)
+            # 1. Проверяем JWT refresh токен
+            payload = JWTManager.verify_refresh_token(refresh_token_jwt)
             if not payload:
-                return None, "Недействительный токен"
+                return None, "Недействительный или истекший токен"
 
             user_id = int(payload['sub'])
             session_id = payload['session_id']
 
-            # 2. Проверяем сессию
-            session = SessionRepository.find_active_session(session_id, refresh_token)
+            # 2. Находим сессию по ID (без проверки токена через find_active_by_id)
+            session = SessionRepository.find_active_by_id(session_id)
             if not session:
-                return None, "Сессия не найдена или отозвана"
+                return None, "Сессия не найдена или неактивна"
+                
+            # 3. Проверяем, что сессия принадлежит пользователю
+            if session.user_id != user_id:
+                return None, "Несоответствие сессии и пользователя"
 
-            # 3. Проверяем пользователя
-            user = User.query.get(user_id)
-            if not user:
-                return None, "Пользователь не найден"
-
-            # 4. Отзываем старую сессию
-            SessionRepository.revoke_session(session_id)
-
-            # 5. Создаём новую сессию
+            # 4. Помечаем старую сессию как REFRESHED
+            session.mark_as_refreshed()
+            
+            # 5. Создаём новую сессию с новым сырым токеном
+            new_raw_refresh_token = secrets.token_urlsafe(64)
             new_session = SessionRepository.create_session(
-                user_id=user.id,
-                refresh_token="temp",
+                user_id=user_id,
+                refresh_token=new_raw_refresh_token,
                 user_agent=request.headers.get('User-Agent', 'Unknown')[:500],
                 ip_address=request.remote_addr
             )
 
-            # 6. Генерируем новые токены
-            new_access, new_refresh = JWTManager.create_token_pair(user, new_session.id)
-
-            # 7. Обновляем хэш, помечая как refreshed (это правильно для refresh)
-            SessionRepository.update_session_token(new_session, new_refresh, mark_refreshed=True)
+            # 6. Генерируем новые JWT токены
+            user = User.query.get(user_id)
+            if not user:
+                return None, "Пользователь не найден"
+                
+            # Новый access token с новым session_id
+            new_access_token = JWTManager.create_access_token({
+                'sub': str(user.id),
+                'login': user.login,
+                'avatar': user.avatar,
+                'status': user.status,
+                'session_id': new_session.id
+            })
+            
+            # Новый refresh token JWT
+            new_refresh_token_jwt = JWTManager.create_refresh_token(user_id, new_session.id)
 
             return {
-                'access_token': new_access,
-                'refresh_token': new_refresh,
+                'access_token': new_access_token,
+                'refresh_token': new_refresh_token_jwt,
                 'token_type': 'bearer',
-                'expires_in': JWTManager._get_default_expiry('access')
+                'expires_in': current_app.config.get('JWT_ACCESS_TOKEN_EXPIRES', 900)
             }, None
 
         except Exception as e:
